@@ -160,7 +160,7 @@ Extending this class forces your app to implement the [`Widget build(BuildContex
 - [return](https://dart.dev/language/functions#return-values)
 
 
-## Getting the Yaru-design
+## Creating the app skeleton
 
 ### MaterialApp
 
@@ -174,7 +174,9 @@ and write `MaterialApp` which opens a popup with a suggested class, press ENTER 
 
 ### Quick look into named parameters in dart
 
-Functions in dart, as in any other modern programming language, can either have no or any kind and amount of [parameters](https://dart.dev/language/functions#parameters) (also called arguments or input variables). [*(In mathematics this is different. All functions must have at least one argument.)*](https://en.wikipedia.org/wiki/Function_(mathematics))
+Don't code now, just read.
+
+Functions in dart, as in any other modern programming language, can either have no or any kind and amount of [parameters](https://dart.dev/language/functions#parameters) (also called arguments or input variables). [*(In mathematics this is different. All functions must have at least one argument and a return value.)*](https://en.wikipedia.org/wiki/Function_(mathematics))
 
 To make reading function calls easier dart has the optional feature of named [parameters](https://dart.dev/language/functions#parameters). Where a function, if defined with (a) named parameter(s), must be called by naming the parameter, followed by a `:` and the value that should be set.
 
@@ -212,7 +214,7 @@ Example Widget definition:
 class _MyNumberWidget extends StatelessWidget {
   // This is the constructor definition
   const _MyNumberWidget({required this.number});
-
+  // This is your parameter of the type integer.
   final int number;
 
   @override
@@ -235,6 +237,44 @@ final Widget myNumberWidget = MyNumberWidget(number: 3)
 
 ### Back to coding: Scaffold
 
+Move your cursor inside the brackets of the `MaterialApp()` constructor call and insert
+
+```dart
+home:
+```
+
+VsCode then suggests:
+
+![](home.png)
+
+Press enter, and write `Scaffold()`
+
+VsCode then suggests:
+
+![](scaffold.png)
+
+Move the selection to `Scaffold()` by pressing your arrow-down key on your keyboard. Press enter when `Scaffold()` is selected.
+
+Your code should now look like this:
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: Scaffold());
+  }
+}
+```
+
+*Note: it is always better to let VsCode do the work by only typing until the code-completion (they call it "intellisense") popup shows up with suggestions. Pressing enter while one of the suggestions is selected is always safer because you will avoid typing errors and because VsCode will often also make the necessary import for you, too. However, this was the last time we've written down the auto-complete-workflow, to not make this tutorial unnecessarily long.*
 
 ### pub.dev
 
@@ -255,7 +295,7 @@ Most of the desktop apps we've encountered could be classified into one of the f
 
 - Master/details apps
   ![](m_d.png)
-- single page apps
+- single page apps *(the weather in Düsseldorf is kinda depressing atm)*
   ![](singlepage.png)
 - wizard apps
   ![](wizard.png)
