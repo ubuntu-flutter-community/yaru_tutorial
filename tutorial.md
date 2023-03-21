@@ -1,5 +1,7 @@
 # How to create an Ubuntu Desktop Yaru application with Flutter
 
+This is a **beginner** tutorial for those new to the Dart programming language, new to programming languages in general and new to the Yaru design.
+
 ## Intro
 
 The preinstalled applications on Ubuntu are quite diverse in their programming language and tooling origins. Some examples are the Firefox internet browser and the Thunderbird e-mail client both being C++ and JavaScript applications, the Libre-Office suite being written in C++, XML, and Java and gnome-files (A.K.A. nautilus) which is written in C with gtk.
@@ -19,7 +21,7 @@ Over the past years we've designed and developed several dart libraries which ma
 
 ### Skill requirements
 
-It does not hurt if you have created an application before, preferable with [an object oriented language](https://en.wikipedia.org/wiki/Object-oriented_programming) and if you are not scared to copy and paste commands into your terminal. But since all steps and code are written in here to process or copy & paste, the requirements are basically only that you want to create an application for Ubuntu.
+It should be an advantage if you have created an application before, preferable with [an object oriented language](https://en.wikipedia.org/wiki/Object-oriented_programming) and if you are not scared to copy and paste commands into your terminal. But since this is a step-by-stand, hands-on tutorial everyone with a bit of technical interest should do fine.
 
 ## Setup
 
@@ -89,7 +91,7 @@ Flutter created a small template app for us. Let's take a look at the three loca
 
 (1) Is the `lib` directory where all of our dart code lives. For now a single `main.dart` file should be enough. All platforms our app wants to be available for gets its own directory. In our case only the `Linux` directory (2). We will come this back later. To define metadata of our app and the dependencies we want to use we need the `pubspec.yaml` file (3).
 
-## First run
+### First run
 
 Now click on `main.dart` (1) to open the file in your editor and click on the small `Run` label above the `void main()` declaration (2) to run the app for the first time
 
@@ -99,7 +101,7 @@ Caution, it is not pretty yet:
 
 ![](not_pretty.png)
 
-## Clean up
+### Clean up
 
 The Flutter template app is quite verbose explaining what it contains but we don't need most of the things in here for now. Delete everything in your main.dart file below line 5
 
@@ -109,7 +111,7 @@ Dart will now complain that the class `MyApp` does not exist any longer. Because
 
 ![](no_my_app.png)
 
-## First snipped: stle
+### First snipped: stle
 
 The Flutter VsCode extensions is extremely helpful for almost any task and saves us a lot of lines to write. There are quick commands, snippets, auto-complete and auto fix features available which we will use in this tutorial.
 The first help we will use is the snippet `stle` which is short for `StatelessWidget`.
@@ -136,21 +138,31 @@ Every time you save your code by either pressing CTRL+S or by the menu entry Fil
 
 ![](restart.png)
 
-## First recap
+### First recap
 
 (1) Imports the package `material.dart`
 
 (2) Is the main application with the `runApp` [function call](https://dart.dev/language/functions).
 
 (3) Is your [class](https://dart.dev/language/classes) `MyApp` which [extends](https://dart.dev/language/extend) the class [`StatelessWidget`](https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html).
-Extending this class forces your app to implement the [`Widget build(BuildContext context)`](https://api.flutter.dev/flutter/widgets/StatelessWidget/build.html) Method, which you do by returning the Widget `PlaceHolder`.
+Extending this class forces your app to implement the [`Widget build(BuildContext context)`](https://api.flutter.dev/flutter/widgets/StatelessWidget/build.html) method, which you do by returning the Widget `PlaceHolder`.
 
 ![](import_main_my_app.png)
 
-## Yaru.dart
+### dart keywords used
+
+- [import](https://dart.dev/language/libraries#using-libraries)
+- [void](https://dart.dev/language/built-in-types)
+- [const](https://dart.dev/language/variables#final-and-const)
+- [class](https://dart.dev/language/classes)
+- [extends](https://dart.dev/language/extend)
+- [super](https://dart.dev/language/extend)
+- [return](https://dart.dev/language/functions#return-values)
 
 
-## MaterialApp
+## Getting the Yaru-design
+
+### MaterialApp
 
 Mark `const Placeholder`
 
@@ -160,8 +172,92 @@ and write `MaterialApp` which opens a popup with a suggested class, press ENTER 
 
 ![](materialapp.png)
 
-## Scaffold
+### Quick look into named parameters in dart
 
-## Libraries
+Functions in dart, as in any other modern programming language, can either have no or any kind and amount of [parameters](https://dart.dev/language/functions#parameters) (also called arguments or input variables). [*(In mathematics this is different. All functions must have at least one argument.)*](https://en.wikipedia.org/wiki/Function_(mathematics))
 
-## Your Ideas
+To make reading function calls easier dart has the optional feature of named [parameters](https://dart.dev/language/functions#parameters). Where a function, if defined with (a) named parameter(s), must be called by naming the parameter, followed by a `:` and the value that should be set.
+
+Example definition without a named parameter:
+```dart
+int incrementByOne(int myParameter) {
+    return myParameter + 1;
+}
+```
+
+Calling the function:
+```dart
+incrementByOne(3);
+```
+
+Example definition with a named parameter:
+```dart
+int incrementByOne({required int myParameter}) {
+    return myParameter + 1;
+}
+```
+
+Calling the function:
+```dart
+incrementByOne(myParameter: 3);
+```
+
+To create an instance of a class one needs to call the [constructor](https://dart.dev/language/constructors) "function" (called method if part of a class).
+
+Flutter widget classes almost always use named parameters, which is increasingly useful the more parameters a Widget has when you call its constructor method.
+
+Example Widget definition:
+
+```dart
+class _MyNumberWidget extends StatelessWidget {
+  // This is the constructor definition
+  const _MyNumberWidget({required this.number});
+
+  final int number;
+
+  @override
+  Widget build(BuildContext context) {
+    // using the parameter to be shown inside the UI
+    return Text(number.toString());
+  }
+}
+```
+
+Somewhere else (where calling functions is allowed):
+```dart
+final Widget myNumberWidget = MyNumberWidget(number: 3)
+```
+
+#### New keywords learned
+
+- [final](https://dart.dev/language/variables#final-and-const)
+- [required](https://dart.dev/language/functions#named-parameters)
+
+### Back to coding: Scaffold
+
+
+### pub.dev
+
+### Dart: add dependencies
+
+### Yaru.dart
+
+### yaru_widgets.dart
+
+### yaru_icons.dart
+
+### hand_window.dart
+
+
+## Types of apps + your ideas
+
+Most of the desktop apps we've encountered could be classified into one of the following "concepts":
+
+- Master/details apps
+  ![](m_d.png)
+- single page apps
+  ![](singlepage.png)
+- wizard apps
+  ![](wizard.png)
+
+That does not mean there aren't more types of apps and most importantly this should not limit your ideas and creativity in any way.
