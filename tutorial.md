@@ -122,7 +122,9 @@ Move below line 5 and write
 
 Now a popup should ... pop-up. (if not press CTRL+ENTER, if this does not help either, there is something wrong with your setup of vscode, flutter and the Flutter VsCode extension).
 
-(1) is your text and the cursor, (2) is the detected snippet `Flutter Stateless Widget` and (3) is a little explanation what will happen if you press ENTER now, which you please do now:
+- (1) is your text and the cursor
+- (2) is the detected snippet `Flutter Stateless Widget`
+- (3) is a little explanation what will happen if you press ENTER now, which you please do now:
 
 ![](stle.png)
 
@@ -140,11 +142,9 @@ Every time you save your code by either pressing CTRL+S or by the menu entry Fil
 
 ### First recap
 
-(1) Imports the package `material.dart`
-
-(2) Is the main application with the `runApp` [function call](https://dart.dev/language/functions).
-
-(3) Is your [class](https://dart.dev/language/classes) `MyApp` which [extends](https://dart.dev/language/extend) the class [`StatelessWidget`](https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html).
+- (1) Imports the package `material.dart`
+- (2) Is the main application with the `runApp` [function call](https://dart.dev/language/functions).
+- (3) Is your [class](https://dart.dev/language/classes) `MyApp` which [extends](https://dart.dev/language/extend) the class [`StatelessWidget`](https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html).
 Extending this class forces your app to implement the [`Widget build(BuildContext context)`](https://api.flutter.dev/flutter/widgets/StatelessWidget/build.html) method, which you do by returning the Widget `PlaceHolder`.
 
 ![](import_main_my_app.png)
@@ -624,6 +624,11 @@ Your app should now look like this (yes no round corners yet!):
 
 ![](noroundyaru.png)
 
+#### New things learned
+
+- [`async` and `await` keywords](https://dart.dev/codelabs/async-await)
+- [`Future<T>`](https://api.dart.dev/stable/2.19.5/dart-async/Future-class.html)
+
 ### handy_window.dart
 
 It's getting the first time a little bit complicated. Please do not panic. Everything is described step by step!
@@ -1024,6 +1029,84 @@ class _Home extends StatelessWidget {
   }
 }
 ```
+
+### Recap and design ideas
+
+- notice the four rounded window corners
+- notice the elegant window border and shadows
+- the whole window is now 100% flutter and you could add any Flutter Widget you like
+  ![](hundred.png)
+- Idea: add a split YaruWindowTitleBar
+- Idea: Wrap the pages in `YaruDetailPage` and let them have their own `YaruWindowTitleBar()`
+- Possible `_Home` code
+    ```dart
+    class _Home extends StatelessWidget {
+    const _Home();
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+        body: YaruMasterDetailPage(
+            length: 2,
+            appBar: const YaruWindowTitleBar(),
+            tileBuilder: (context, index, selected) {
+            if (index == 0) {
+                return const YaruMasterTile(
+                leading: Icon(YaruIcons.ubuntu_logo),
+                title: Text('Page 1'),
+                );
+            } else {
+                return const YaruMasterTile(
+                leading: Icon(YaruIcons.colors),
+                title: Text('Page 2'),
+                );
+            }
+            },
+            pageBuilder: (context, index) {
+            if (index == 0) {
+                return const YaruDetailPage(
+                appBar: YaruWindowTitleBar(
+                    title: Text('Page 1'),
+                ),
+                body: Center(
+                    child: Text('Hello Ubuntu'),
+                ),
+                );
+            } else {
+                return const YaruDetailPage(
+                appBar: YaruWindowTitleBar(
+                    title: Text('Page 2'),
+                ),
+                body: Center(
+                    child: Text('Hello Yaru'),
+                ),
+                );
+            }
+            },
+        ),
+        );
+    }
+    }
+    ```
+- Resulting UI:
+  ![](better.png)
+
+However those are just ideas which should not limit your ideas in any way!
+
+### Organize your code!
+
+VsCode quick commands make it really easy to wrap, extract and move Widgets, wrap parts inside control blocks or quick fix. Use this power to extract and split your code into multiple files and Widgets.
+
+### Explore yaru_widgets
+
+In addition to `material.dart`, `yaru_widgets.dart` offers a ton of good looking widgets to chose from, which fit perfectly into the Ubuntu desktop.
+
+Check them out by either browsing https://ubuntu.github.io/yaru_widgets.dart/#/ or by installing `sudo snap install yaru-widgets-example`
+
+![](example.png)
+
+All widgets have a short example page with the source code how to use them.
+Hopefully this tutorial was helpful, thanks for coding!
 
 
 ## Knowledge links and recommended dart libraries

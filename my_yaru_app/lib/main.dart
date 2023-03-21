@@ -30,9 +30,9 @@ class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const YaruWindowTitleBar(),
       body: YaruMasterDetailPage(
         length: 2,
+        appBar: const YaruWindowTitleBar(),
         tileBuilder: (context, index, selected) {
           if (index == 0) {
             return const YaruMasterTile(
@@ -48,12 +48,22 @@ class _Home extends StatelessWidget {
         },
         pageBuilder: (context, index) {
           if (index == 0) {
-            return const Center(
-              child: Text('Hello Ubuntu'),
+            return const YaruDetailPage(
+              appBar: YaruWindowTitleBar(
+                title: Text('Page 1'),
+              ),
+              body: Center(
+                child: Text('Hello Ubuntu'),
+              ),
             );
           } else {
-            return const Center(
-              child: Text('Hello Yaru'),
+            return const YaruDetailPage(
+              appBar: YaruWindowTitleBar(
+                title: Text('Page 2'),
+              ),
+              body: Center(
+                child: Text('Hello Yaru'),
+              ),
             );
           }
         },
