@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,6 +10,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold());
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        theme: yaru.theme,
+        darkTheme: yaru.darkTheme,
+        home: _Home(),
+      );
+    });
+  }
+}
+
+class _Home extends StatelessWidget {
+  const _Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Hello Ubuntu',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -21,7 +21,7 @@ Over the past years we've designed and developed several dart libraries which ma
 
 ### Skill requirements
 
-It should be an advantage if you have created an application before, preferable with [an object oriented language](https://en.wikipedia.org/wiki/Object-oriented_programming) and if you are not scared to copy and paste commands into your terminal. But since this is a step-by-stand, hands-on tutorial everyone with a bit of technical interest should do fine.
+It should be an advantage if you have created an application before, preferable with [an object oriented language](https://en.wikipedia.org/wiki/Object-oriented_programming) and if you are not scared to copy and paste commands into your terminal. But since this is a step-by-step, hands-on tutorial everyone with a bit of technical interest should do fine.
 
 ## Setup
 
@@ -274,21 +274,265 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-*Note: it is always better to let VsCode do the work by only typing until the code-completion (they call it "intellisense") popup shows up with suggestions. Pressing enter while one of the suggestions is selected is always safer because you will avoid typing errors and because VsCode will often also make the necessary import for you, too. However, this was the last time we've written down the auto-complete-workflow, to not make this tutorial unnecessarily long.*
+*Note: it is always better to let VsCode do the work by only typing until the code-completion (they call it "intellisense") popup shows up with suggestions. Pressing enter while one of the suggestions is selected is always safer because you will avoid typing errors and because VsCode will often also make the necessary import for you, too. However to not make this tutorial unnecessarily long, we won't go through this in every step.*
 
+
+## Using the Yaru libraries
 ### pub.dev
+
+Pub.dev is the server infrastructure by google to host dart and flutter packages and you can use inside your flutter or dart applications by adding them as dependencies to your pubspec.yaml file.
+
+Not all packages on pub.dev are made for Linux but many. You can filter them with the platform=Linux filter. Recommended is also to check the dart3 compatible checkbox to get up to date packages.
+
+https://pub.dev/packages?q=platform%3Alinux+is%3Adart3-compatible
 
 ### Dart: add dependencies
 
+From your development environment, in case of this tutorial VsCode, you can add, update and remove dependencies with the [`dart pub`](https://dart.dev/tools/pub/cmd) and `flutter pub` commands from the terminal.
+In VsCode you can also use the command palette that you can open with CTRL+SHIFT+P.
+
+Open the command palette and type `Dart: Add Dependency`
+
+![](dart_add_dep.png)
+
 ### Yaru.dart
+
+Type `yaru` and select the `yaru` package by pressing enter. The package will now be added to your `pubspec.yaml` file.
+
+![](yaru.png)
+
+Notice that two tasks are now run by VsCode. Wait until they are done
+
+![](adding.png)
+
+### YaruTheme
+
+Move your cursor into `MaterialApp`
+
+![](cursor.png)
+
+Press the new key-combination CTRL+., which will open up a new context menu "Quick fix" and move your selection to "Wrap with Builder"
+
+![](builder.png)
+
+Press Enter, and immediately press CTRL+S after, to safe your changes.
+
+Saving your file also let's the VsCode flutter extension magically format your code in the background
+with the [`dart format`](https://dart.dev/tools/dart-format) command.
+
+Your resulting main.dart should now look like this:
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      return MaterialApp(home: Scaffold());
+    });
+  }
+}
+```
+
+Replace `Builder` with `YaruTheme`. A auto-complete context menu will pop up.
+
+- (1) Is what you write: `YaruTheme`
+- (2) Is your selection after pressing enter
+- (3) Is what will happen after you've pressed enter
+
+![](yaruthemeimport.png)
+
+The `yaru.dart` package is now useable from within your `main.dart` file because the `import 'package:yaru/yaru.dart';` has been added (1) at the top of your file
+
+![](yaruimport.png)
+
+The builder callback from `YaruTheme` needs two more parameters: an parameter of the type `YaruThemeData` and of the type `Widget?`.
+
+![](morepara.png)
+
+Add them separated by `,`behind the `context` parameter of the `builder` callback of `YaruTheme` by writing `yaru, child`. Your code should now look like this:
+
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(home: Scaffold());
+    });
+  }
+}
+``` 
+
+`yaru` can now be used as a parameter of `MaterialApp`, and the flutter app will switch it's accent colors according to what accent color is selected in your Ubuntu settings app.
+
+Set the theme property of Material app to `yaru.theme`and the dark theme property to `yaru.darkTheme`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        theme: yaru.theme, // <-----------
+        darkTheme: yaru.darkTheme, // <-------------
+        home: Scaffold(),
+      );
+    });
+  }
+}
+```
+
+As an evidence that your app's accent color and brightness now follow your system let's add a primary color text in the middle of your `Scaffold`. 
+
+- Set the `body` property of `Scaffold` to `Center()`
+- Set the child property of `Center` to `Text('Hello Ubuntu')`
+- Set the `style` property of the `Text` to `TextStyle(color: Theme.of(context).primaryColor)`
+
+Your code should now look like this, but we ain't done yet:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        theme: yaru.theme,
+        darkTheme: yaru.darkTheme,
+        home: Scaffold(
+          body: Center(
+            child: Text(
+              'Hello Ubuntu',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+```
+
+Move your cursor onto `Scaffold` and re-open the quick-fix context menu as before with CTRL+.
+This time, select `Extract Widget` 
+
+![](extract_scaffold.png)
+
+and press enter.
+
+Look to the top, a little dialog appeared and asks you how the extracted Widget should be named.
+Call it `_Home` (with a leading underscore):
+
+![](look_up.png)
+
+Press enter.
+
+Your code should now look like this:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        theme: yaru.theme,
+        darkTheme: yaru.darkTheme,
+        home: _Home(),
+      );
+    });
+  }
+}
+
+class _Home extends StatelessWidget {
+  const _Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Hello Ubuntu',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Save your file and notice how the text is now in your system's primary accent color, while the window follows your system dark/light theme preference:
+
+![](settings_app.png)
+
 
 ### yaru_widgets.dart
 
 ### yaru_icons.dart
 
-### hand_window.dart
+### handy_window.dart
 
+## Freedesktop and hardware API dart packages
 
+### dbus.dart
+
+### bluez.dart
+
+### nm.dart
+
+### date_time_service.dart
+
+### snapd.dart
+
+### package_kit.dart
 ## Types of apps + your ideas
 
 Most of the desktop apps we've encountered could be classified into one of the following "concepts":
