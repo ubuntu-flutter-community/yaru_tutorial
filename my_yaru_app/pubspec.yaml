@@ -38,6 +38,7 @@ dependencies:
   yaru: ^0.6.0
   yaru_widgets: ^2.2.2
   handy_window: ^0.3.1
+  yaru_icons: ^1.0.4
 
 dev_dependencies:
   flutter_test:

@@ -633,7 +633,7 @@ We could totally only change the lines that need to be changed, however this wou
 
 - add `handy_window` like you've added the other dependencies before
 - open `my_application.cc` inside the `Linux` directory
-- Exchange the whole file with the following
+- Exchange the whole file with the following (you can also change the default, min and max sizes of your window inside this file):
 
 ```cc
 #include "my_application.h"
@@ -854,13 +854,11 @@ Tadah!!! Your app should now look like this:
 
 ![](almostdone.png)
 
-### yaru_icons.dart
-
 ## Types of apps + your ideas
 
 Most of the desktop apps we've encountered could be classified into one of the following "concepts":
 
-- Master/details apps
+- Master/detail apps
   ![](m_d.png)
 - single page apps *(the weather in Düsseldorf is kinda depressing atm)*
   ![](singlepage.png)
@@ -868,6 +866,165 @@ Most of the desktop apps we've encountered could be classified into one of the f
   ![](wizard.png)
 
 That does not mean there aren't more types of apps and most importantly this should not limit your ideas and creativity in any way.
+
+## Your master detail app
+
+### YaruMasterDetailPage
+
+In this tutorial we create a master/details-app, because this type of app is pretty common in desktop environments.
+
+- replace the value of the `body` property of you `_Home` with `YaruMasterDetailPage()`
+- set the `length` property an integer value that matches the amount o pages you plan to add
+- write `tileBuilder` beneath the `length` property and wait for the auto complete context menu
+- press enter after you selected `(context, index, selected) {}`  with pressing the arrow-down key
+- write `pageBuilder` beneath the `tileBuilder` property
+- press enter after you selected `(context, index) {}`  with pressing the arrow-down key
+
+Your `_Home` code should now look like this (not done yet):
+
+```dart
+class _Home extends StatelessWidget {
+  const _Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: YaruWindowTitleBar(),
+      body: YaruMasterDetailPage(
+        length: 2,
+        tileBuilder: (context, index, selected) {},
+        pageBuilder: (context, index) {},
+      ),
+    );
+  }
+}
+```
+
+- inside the `tileBuilder` callback return a different `YaruMasterTile()` depending if the value of `index` is `0` or not
+- inside the `pageBuilder` callback return a different `Widget` depending if the value of `index` is `0` or not
+
+Your `_Home` could now look like this, as a starting point:
+
+```dart
+class _Home extends StatelessWidget {
+  const _Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: YaruWindowTitleBar(),
+      body: YaruMasterDetailPage(
+        length: 2,
+        tileBuilder: (context, index, selected) {
+          if (index == 0) {
+            return YaruMasterTile(title: Text('Page 1'));
+          } else {
+            return YaruMasterTile(title: Text('Page 2'));
+          }
+        },
+        pageBuilder: (context, index) {
+          if (index == 0) {
+            return Center(
+              child: Text('Hello Ubuntu'),
+            );
+          } else {
+            return Center(
+              child: Text('Hello Yaru'),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+```
+
+With this code, your app would look like this:
+
+![](donenoicons.png)
+
+### yaru_icons.dart
+
+The thin stroked, sleek yaru_icons are elemental for the full Yaru look and fit perfectly to the Ubuntu font.
+Icons can be used anywhere in a Flutter app, since they are Widgets. In our example we chose them to use as a leading widget in your master view.
+
+- add `yaru_icons` as a dependency like you added the previous dependencies
+- change the `leading` property of your `YaruMasterTile`s to have the value `Icon(YaruIcons.XXXX)` where `XXXX` is any icon you want to have
+- There is a nice overview of currently available icons on this website (also made with flutter): https://ubuntu.github.io/yaru_icons.dart/
+- to finally get rid of all blue underlines (warnings) run the command `dart fix --apply`
+
+The final version of your `main.dart`code for this tutorial could be the following, depending on what pages and tiles you've chosen to show:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+import 'package:yaru_icons/yaru_icons.dart';
+import 'package:yaru_widgets/yaru_widgets.dart';
+
+Future<void> main() async {
+  await YaruWindowTitleBar.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: yaru.theme,
+        darkTheme: yaru.darkTheme,
+        home: const _Home(),
+      );
+    });
+  }
+}
+
+class _Home extends StatelessWidget {
+  const _Home();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const YaruWindowTitleBar(),
+      body: YaruMasterDetailPage(
+        length: 2,
+        tileBuilder: (context, index, selected) {
+          if (index == 0) {
+            return const YaruMasterTile(
+              leading: Icon(YaruIcons.ubuntu_logo),
+              title: Text('Page 1'),
+            );
+          } else {
+            return const YaruMasterTile(
+              leading: Icon(YaruIcons.colors),
+              title: Text('Page 2'),
+            );
+          }
+        },
+        pageBuilder: (context, index) {
+          if (index == 0) {
+            return const Center(
+              child: Text('Hello Ubuntu'),
+            );
+          } else {
+            return const Center(
+              child: Text('Hello Yaru'),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+```
+
 
 ## Knowledge links and recommended dart libraries
 ### Freedesktop and other Linux specific API implementations in dart
