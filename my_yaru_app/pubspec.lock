@@ -83,6 +83,11 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   gtk:
     dependency: transitive
     description:
@@ -91,6 +96,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  handy_window:
+    dependency: "direct main"
+    description:
+      name: handy_window
+      sha256: "458a9f7d4ae23816e8f33c76596f943a04e7eff13d864e0867f3b40f1647d63d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   js:
     dependency: transitive
     description:
@@ -147,6 +160,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "6a2128648c854906c53fa8e33986fc0247a1116122f9534dd20e3ab9e16a32bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.4"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: "4931f226ca158123ccd765325e9fbf360bfed0af9b460a10f960f9bb13d58323"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -208,6 +237,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  window_manager:
+    dependency: transitive
+    description:
+      name: window_manager
+      sha256: "492806c69879f0d28e95472bbe5e8d5940ac8c6e99cc07052fe14946974555ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   yaru:
     dependency: "direct main"
     description:
@@ -232,6 +269,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.6"
+  yaru_icons:
+    dependency: transitive
+    description:
+      name: yaru_icons
+      sha256: "8ddd40522c882de898a493094f2f41687f7a0faaf3434b9c854a7605a53a2477"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
+  yaru_widgets:
+    dependency: "direct main"
+    description:
+      name: yaru_widgets
+      sha256: d3112304de14bd181efdb9ba7d953c0d30d4a856636b86b6330b18257ca62809
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
+  yaru_window:
+    dependency: transitive
+    description:
+      name: yaru_window
+      sha256: "18b3df2922a068e5480048335e2585c134e29ac77baec19b26fa32851910bf2f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
+  yaru_window_linux:
+    dependency: transitive
+    description:
+      name: yaru_window_linux
+      sha256: "356903ebcb70c34f732dbb66ac8b504adb8e92289cdd89da86bed8957f43de38"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
+  yaru_window_manager:
+    dependency: transitive
+    description:
+      name: yaru_window_manager
+      sha256: a5ea9db86cbca6306fdf139245fcd84f0df1fed0aead3450d34a9fe7be4d3020
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
+  yaru_window_platform_interface:
+    dependency: transitive
+    description:
+      name: yaru_window_platform_interface
+      sha256: "1a0256fc59cc46ad05de5840f01d548184ff900698c19dc24e6326c7911b0177"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
+  yaru_window_web:
+    dependency: transitive
+    description:
+      name: yaru_window_web
+      sha256: "77dacaaade6c2b5f94cf45b80f60c69876d62db02490e50dd025ce297cfc09ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
 sdks:
   dart: ">=2.19.0 <4.0.0"
-  flutter: ">=3.7.0-0"
+  flutter: ">=3.7.0"

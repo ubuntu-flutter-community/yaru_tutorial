@@ -509,30 +509,353 @@ class _Home extends StatelessWidget {
 }
 ```
 
-Save your file and notice how the text is now in your system's primary accent color, while the window follows your system dark/light theme preference:
+Save your file and notice how the text is now colored in your system's primary accent color, while the window follows your system dark/light theme preference:
 
 ![](settings_app.png)
 
 
+### Recap
+
+Alright, take a deep breath! 
+
+The basic yaru theme and colors are in but we got more things to do:
+
+1) **Make the window consist of 100% flutter widgets with client side window decorations** <-- next
+2) use yaru_icons
+3) Make the window have 4 founded corners
+
 ### yaru_widgets.dart
 
-### yaru_icons.dart
+As you may have observed the app is living inside a GTK window.
+
+![](gtkwindow.png)
+
+This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: `yaru_widgets.dart`
+
+Fire up the VsCode command palette again with CTRL+SHIFT+P, and type `Dart: Add Dependency` as before. Now search for `yaru_widgets` and hit enter when selected.
+
+In your main.dart file write `YaruWindowTitleBar` before you call `runApp`.
+- (1) write `YaruWindowTitleBar`
+- (2) Notice the auto complete context menu
+- (3) Notice the nice explanation about what will be imported (eventually even read it) and press enter
+
+![](yaruwindowtitlebar.png)
+
+In line 3 you should now have this import
+```dart
+import 'package:yaru_widgets/yaru_widgets.dart';
+```
+
+Complete the line by using the `await` keyword, and calling `YaruWindowTitleBar.ensureInitialized()`
+
+![](ensureinit.png)
+
+![](quick.png)
+
+Use the recommended quick fix by pressing enter when "Add 'async' modifier" is selected
+
+![](addasync.png)
+
+Your `main` function should now look like this:
+
+```dart
+Future<void> main() async {
+  await YaruWindowTitleBar.ensureInitialized();
+  runApp(const MyApp());
+}
+```
+
+- Inside your `_Home` change the `appBar` property of `Scaffold` to `YaruWindowTitleBar()`
+- Inside your `MyApp` change the `debugShowCheckedModeBanner` property to have the value `false` to remove the red debug banner in the window corner
+
+Your code should now look like this:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:yaru/yaru.dart';
+import 'package:yaru_widgets/yaru_widgets.dart';
+
+Future<void> main() async {
+  await YaruWindowTitleBar.ensureInitialized();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return YaruTheme(builder: (context, yaru, child) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: yaru.theme,
+        darkTheme: yaru.darkTheme,
+        home: _Home(),
+      );
+    });
+  }
+}
+
+class _Home extends StatelessWidget {
+  const _Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: YaruWindowTitleBar(),
+      body: Center(
+        child: Text(
+          'Hello Ubuntu',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Since yaru_widgets also modified the Linux specific files we did not look into (yet) you need to restart the app this time completely. Stop it, and start it again.
+
+Your app should now look like this (yes no round corners yet!):
+
+![](noroundyaru.png)
 
 ### handy_window.dart
 
-## Freedesktop and hardware API dart packages
+It's getting the first time a little bit complicated. Please do not panic. Everything is described step by step!
 
-### dbus.dart
+Now we will need to modify two files inside the Linux directory to get the full `Yaru` look.
+We could totally only change the lines that need to be changed, however this would expand this tutorial to c++ and cmake knowledge. So instead of editing the files, we will replace them completely.
 
-### bluez.dart
+- add `handy_window` like you've added the other dependencies before
+- open `my_application.cc` inside the `Linux` directory
+- Exchange the whole file with the following
 
-### nm.dart
+```cc
+#include "my_application.h"
 
-### date_time_service.dart
+#include <flutter_linux/flutter_linux.h>
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 
-### snapd.dart
+#include <handy.h>
 
-### package_kit.dart
+#include "flutter/generated_plugin_registrant.h"
+
+struct _MyApplication {
+  GtkApplication parent_instance;
+  char** dart_entrypoint_arguments;
+};
+
+G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Implements GApplication::activate.
+static void my_application_activate(GApplication* application) {
+  MyApplication* self = MY_APPLICATION(application);
+
+#ifdef NDEBUG
+  // Activate an existing app instance if already running but only in
+  // production/release mode. Allow multiple instances in debug mode for
+  // easier debugging and testing.
+  GList* windows = gtk_application_get_windows(GTK_APPLICATION(application));
+  if (windows) {
+    gtk_window_present(GTK_WINDOW(windows->data));
+    return;
+  }
+#endif
+
+  GtkWindow* window = GTK_WINDOW(hdy_application_window_new());
+  gtk_window_set_application(window, GTK_APPLICATION(application));
+
+  GdkGeometry geometry_min;
+  geometry_min.min_width = 680;
+  geometry_min.min_height = 600;
+  gtk_window_set_geometry_hints(window, nullptr, &geometry_min, GDK_HINT_MIN_SIZE);
+
+  gtk_window_set_default_size(window, 1280, 720);
+  gtk_widget_show(GTK_WIDGET(window));
+
+  g_autoptr(FlDartProject) project = fl_dart_project_new();
+  fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
+
+  FlView* view = fl_view_new(project);
+  gtk_widget_show(GTK_WIDGET(view));
+  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
+
+  fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+
+  gtk_widget_grab_focus(GTK_WIDGET(view));
+}
+
+static gint my_application_command_line(GApplication *application, GApplicationCommandLine *command_line) {
+  MyApplication *self = MY_APPLICATION(application);
+  gchar **arguments = g_application_command_line_get_arguments(command_line, nullptr);
+  self->dart_entrypoint_arguments = g_strdupv(arguments + 1);
+
+  g_autoptr(GError) error = nullptr;
+  if (!g_application_register(application, nullptr, &error)) {
+    g_warning("Failed to register: %s", error->message);
+    return 1;
+  }
+
+  hdy_init();
+
+  g_application_activate(application);
+  return 0;
+}
+
+// Implements GObject::dispose.
+static void my_application_dispose(GObject *object) {
+  MyApplication* self = MY_APPLICATION(object);
+  g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
+  G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
+}
+
+static void my_application_class_init(MyApplicationClass* klass) {
+  G_APPLICATION_CLASS(klass)->activate = my_application_activate;
+  G_APPLICATION_CLASS(klass)->command_line = my_application_command_line;
+  G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
+}
+
+static void my_application_init(MyApplication* self) {}
+
+MyApplication* my_application_new() {
+  return MY_APPLICATION(g_object_new(
+      my_application_get_type(), "application-id", APPLICATION_ID, "flags",
+      G_APPLICATION_HANDLES_COMMAND_LINE | G_APPLICATION_HANDLES_OPEN,
+      nullptr));
+}
+```
+
+- open `CMakeLists.txt`
+- replace the whole file with the following file (make sure that BINARY_NAME and APPLICATION_ID match your app)
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(runner LANGUAGES CXX)
+
+set(BINARY_NAME "my_yaru_app")
+set(APPLICATION_ID "com.test.my_yaru_app")
+
+cmake_policy(SET CMP0063 NEW)
+
+set(USE_LIBHANDY ON)
+
+set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
+
+# Configure build options.
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE
+    STRING "Flutter build mode" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Profile" "Release")
+endif()
+
+# Compilation settings that should be applied to most targets.
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+  target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
+endfunction()
+
+set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+
+# Flutter library and tool build rules.
+add_subdirectory(${FLUTTER_MANAGED_DIR})
+
+# System-level dependencies.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+
+add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
+
+# Application build
+add_executable(${BINARY_NAME}
+  "main.cc"
+  "my_application.cc"
+  "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
+)
+apply_standard_settings(${BINARY_NAME})
+target_link_libraries(${BINARY_NAME} PRIVATE flutter)
+target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
+add_dependencies(${BINARY_NAME} flutter_assemble)
+# Only the install-generated bundle's copy of the executable will launch
+# correctly, since the resources must in the right relative locations. To avoid
+# people trying to run the unbundled copy, put it in a subdirectory instead of
+# the default top-level location.
+set_target_properties(${BINARY_NAME}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
+)
+
+# Generated plugin build rules, which manage building the plugins and adding
+# them to the application.
+include(flutter/generated_plugins.cmake)
+
+
+# === Installation ===
+# By default, "installing" just makes a relocatable bundle in the build
+# directory.
+set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+endif()
+
+# Start with a clean build bundle directory every time.
+install(CODE "
+  file(REMOVE_RECURSE \"${BUILD_BUNDLE_DIR}/\")
+  " COMPONENT Runtime)
+
+set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+
+install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
+  COMPONENT Runtime)
+
+install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  COMPONENT Runtime)
+
+if(PLUGIN_BUNDLED_LIBRARIES)
+  install(FILES "${PLUGIN_BUNDLED_LIBRARIES}"
+    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+
+# Fully re-copy the assets directory on each build to avoid having stale files
+# from a previous install.
+set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
+install(CODE "
+  file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
+  " COMPONENT Runtime)
+install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
+  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+
+# Install the AOT library on non-Debug builds only.
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+endif()
+```
+
+Since handy_window also modified the Linux specific files you need to restart the app this time completely. Stop it, and start it again.
+
+### Success!
+
+Tadah!!! Your app should now look like this:
+
+![](almostdone.png)
+
+### yaru_icons.dart
+
 ## Types of apps + your ideas
 
 Most of the desktop apps we've encountered could be classified into one of the following "concepts":
@@ -545,3 +868,35 @@ Most of the desktop apps we've encountered could be classified into one of the f
   ![](wizard.png)
 
 That does not mean there aren't more types of apps and most importantly this should not limit your ideas and creativity in any way.
+
+## Knowledge links and recommended dart libraries
+### Freedesktop and other Linux specific API implementations in dart
+
+- [dbus.dart](https://pub.dev/packages/dbus)
+- [bluez.dart](https://pub.dev/packages/bluez)
+- [nm.dart](https://pub.dev/packages/nm)
+- [snapd.dart](https://pub.dev/packages/snapd)
+- [xdg_desktop_portal](https://pub.dev/packages/xdg_desktop_portal)
+- [desktop_notifications](https://pub.dev/packages/desktop_notifications)
+
+### Essential Flutter knowledge
+
+- [What is State?](https://www.youtube.com/watch?v=QlwiL_yLh6E)
+- [BuildContext](https://www.youtube.com/watch?v=rIaaH87z1-g)
+### State management
+
+- [provider](https://pub.dev/packages/provider)
+- [riverpod](https://pub.dev/packages/riverpod)
+
+### Database access and REST services
+
+- [isar](https://pub.dev/packages/isar)
+- [mysql client](https://pub.dev/packages/mysql_client)
+- [conduit](https://pub.dev/packages/conduit)
+
+### Cloud API access
+
+- [supabase (open source firebase alternative)](https://pub.dev/packages/supabase)
+- [appwrite (oppen source firebase alternative)](https://pub.dev/packages/appwrite)
+- [amazon amplify](https://pub.dev/packages/amplify_flutter) (<--- Linux support in dev branch)
+- [firebase](https://github.com/invertase/flutterfire_desktop)
