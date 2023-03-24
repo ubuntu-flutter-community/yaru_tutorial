@@ -9,14 +9,13 @@ The preinstalled applications on Ubuntu are quite diverse in their programming l
 Another toolkit is [Flutter](https://flutter.dev/). Flutter is a multi platform toolkit written in C++ and dart.
 The GUI of the new Ubuntu Desktop installer is made Flutter as well as the next iteration of Ubuntu Software plus there are hundreds of iOS, Android, Windows, Web and MacOS applications created with Flutter.
 
-Over the past years we've designed and developed several dart libraries which make it easy to create Ubuntu Desktop applications with Flutter. This tutorial will make all of this less mystical for people not familiar with neither Flutter nor our dart libraries.
+Over the past years the [ubuntu-flutter-community](https://github.com/ubuntu-flutter-community) and [canonical](https://github.com/orgs/canonical/repositories?q=&type=all&language=dart&sort=) designed and developed several dart libraries which make it easy to create Ubuntu Desktop applications with Flutter. This tutorial will make all of this less mystical for people not familiar with neither Flutter nor our dart libraries.
 
 ### What you will learn
 
 - How to setup your Flutter development environment on Ubuntu
 - Learn VsCode basics
 - Get to know dart libraries to create an aesthetic and visually consistent desktop application
-- Get to know dart libraries to interact with existing Free-Desktop and hardware related APIs on Ubuntu
 - Create a starting point for either a multi-page, single-page or wizard-like desktop applications on Ubuntu
 
 ### Skill requirements
@@ -31,38 +30,38 @@ If you want to create Android or Web applications with Flutter from your Ubuntu 
 
 The following lines will install the dependencies for Flutter Linux apps, create a directory in your home dir, clone the flutter git repository and export the `flutter` and `dart` commands to your path so you can run it from any user shell.
 
-So please open up your terminal on Ubuntu by either pressing the key-combination CTRL + ALT + T or by searching for "Terminal" in your Ubuntu search. Now 
+- So please open up your terminal on Ubuntu by either pressing the key-combination CTRL + ALT + T or by searching for "Terminal" in your Ubuntu search. And... 
 
-**either** copy & paste the following lines successively into your terminal and press enter after:
+  **...either** copy & paste the following lines successively into your terminal and press enter after:
 
-```bash
-sudo apt install git curl cmake meson make clang libgtk-3-dev pkg-config
-mkdir -p ~/development
-cd ~/development
-git clone https://github.com/flutter/flutter.git -b stable
-echo 'export PATH="$PATH:$HOME/development/flutter/bin"' >> ~/.bashrc
-source ~/.bashrc
-```
+  ```bash
+  sudo apt install git curl cmake meson make clang libgtk-3-dev pkg-config
+  mkdir -p ~/development
+  cd ~/development
+  git clone https://github.com/flutter/flutter.git -b stable
+  echo 'export PATH="$PATH:$HOME/development/flutter/bin"' >> ~/.bashrc
+  source ~/.bashrc
+  ```
 
-**OR** use this one-liner to copy and paste everything into your terminal, :warning: this does not stop until it is done:
+  **OR** use this one-liner to copy and paste everything into your terminal, :warning: this does not stop until it is done:
 
-```bash
-sudo apt -y install git curl cmake meson make clang libgtk-3-dev pkg-config && mkdir -p ~/development && cd ~/development && git clone https://github.com/flutter/flutter.git -b stable && echo 'export PATH="$PATH:$HOME/development/flutter/bin"' >> ~/.bashrc && source ~/.bashrc
-```
+  ```bash
+  sudo apt -y install git curl cmake meson make clang libgtk-3-dev pkg-config && mkdir -p ~/development && cd ~/development && git clone https://github.com/flutter/flutter.git -b stable && echo 'export PATH="$PATH:$HOME/development/flutter/bin"' >> ~/.bashrc && source ~/.bashrc
+  ```
 
 ### Install VsCode
 
-Run the following command to install VsCode on your Ubuntu machine (or install it from Ubuntu Software):
+- Run the following command to install VsCode on your Ubuntu machine (or install it from Ubuntu Software):
 
-```bash
-sudo snap install code --classic
-```
+  ```bash
+  sudo snap install code --classic
+  ```
 
 ### Setup VsCode
 
-Open VsCode, click on the extension icon in the left sidebar (1), type "Flutter" and click "Install" on the first entry (3), this should be the Flutter extension by Dart Code.
+- Open VsCode, click on the extension icon in the left sidebar (1), type "Flutter" and click "Install" on the first entry (3), this should be the Flutter extension by Dart Code.
 
-![](flutter_ext.png)
+  ![](flutter_ext.png)
 
 ## Let's get started: flutter create
 
@@ -70,42 +69,45 @@ VsCode offers a command palette which you can open with either CTRL+SHIFT+P or b
 
 ![](command_palette.png)
 
-We *could* now type "Flutter new project"
+We ***could*** now type "Flutter new project", but we don't!
 
 ![](flutter_new.png)
 
 However, since we want to make amount of auto created files as small as possible to make the management as easy as possible, we want to specify the platforms for our new project.
 
-Open the integrated terminal in vscode if it is not already opened
+- Open the integrated terminal in vscode if it is not already opened
 
-![](new_terminal.png)
+  ![](new_terminal.png)
 
-And run the following command to create a new Flutter project for Linux only (you can add more platforms at any point if you want) and specify the name of your organization/company and your appname:
+- And run the following command to create a new Flutter project for Linux only (you can add more platforms at any point if you want) and specify the name of your organization/company and your appname:
 
-```bash
-flutter create --platforms=linux --org com.test my_yaru_app
-```
-Flutter created a small template app for us. Let's take a look at the three locations we need to visit first:
+  ```bash
+  flutter create --platforms=linux --org com.test my_yaru_app
+  ```
+- Flutter created a small template app for us. Let's take a look at the three locations we need to visit first:
 
-![](first_locations.png)
+  ![](first_locations.png)
 
-(1) Is the `lib` directory where all of our dart code lives. For now a single `main.dart` file should be enough. All platforms our app wants to be available for gets its own directory. In our case only the `Linux` directory (2). We will come this back later. To define metadata of our app and the dependencies we want to use we need the `pubspec.yaml` file (3).
+  (1) Is the `lib` directory where all of our dart code lives. For now a single `main.dart` file should be enough. All platforms our app wants to be available for gets its own directory. In our case only the `Linux` directory (2). We will come this back later. To define metadata of our app and the dependencies we want to use we need the `pubspec.yaml` file (3).
 
 ### First run
 
-Now click on `main.dart` (1) to open the file in your editor and click on the small `Run` label above the `void main()` declaration (2) to run the app for the first time
+- Now click on `main.dart` (1) to open the file in your editor and click on the small `Run` label above the `void main()` declaration (2) to run the app for the first time
 
-![](first_run.png)
+  ![](first_run.png)
 
-Caution, it is not pretty yet:
-
-![](not_pretty.png)
+| ![space-1.jpg](not_pretty.png) | 
+|:--:| 
+| *(Caution, it is not pretty yet)* |
+  
 
 ### Clean up
 
-The Flutter template app is quite verbose explaining what it contains but we don't need most of the things in here for now. Delete everything in your main.dart file below line 5
+The Flutter template app is quite verbose explaining what it contains but we don't need most of the things in here for now.
 
-![](delete.png)
+- Delete everything in your main.dart file below line 5
+
+  ![](delete.png)
 
 Dart will now complain that the class `MyApp` does not exist any longer. Because we've just deleted it on purpose.
 
@@ -116,9 +118,9 @@ Dart will now complain that the class `MyApp` does not exist any longer. Because
 The Flutter VsCode extensions is extremely helpful for almost any task and saves us a lot of lines to write. There are quick commands, snippets, auto-complete and auto fix features available which we will use in this tutorial.
 The first help we will use is the snippet `stle` which is short for `StatelessWidget`.
 
-Move below line 5 and write
+- Move below line 5 and write
 
-`stle` 
+  `stle` 
 
 Now a popup should ... pop-up. (if not press CTRL+ENTER, if this does not help either, there is something wrong with your setup of vscode, flutter and the Flutter VsCode extension).
 
@@ -128,15 +130,17 @@ Now a popup should ... pop-up. (if not press CTRL+ENTER, if this does not help e
 
 ![](stle.png)
 
-Something happened! Now please stay calm and look what you got. The created snippet left a multi-cursor in the places which change if you change the name of your `StatelessWidget`.
+Something happened! Now please stay calm, take your fingers off the keyboard for a moment and look at what you got.
 
-![](multi_cursor.png)
+- The created snippet left a "multi-cursor" in the places which change if you change the name of your `StatelessWidget`.
 
-Just start writing now! Write `MyApp` and the text will be written into both places at once. When you are done press the ESC key on your keyboard to stop the multi-cursor. Pressing CTRL+S will save your code and the changes will be hot-reloaded immediately into your app:
+  ![](multi_cursor.png)
 
-![](my_app.png)
+- Just start writing `MyApp` now and the text will be written into both places at once. When you are done press the ESC key on your keyboard to stop the multi-cursor. Pressing CTRL+S will save your code and the changes will be hot-reloaded immediately into your app:
 
-Every time you save your code by either pressing CTRL+S or by the menu entry File->Save, Flutter will [Hot-Reload your changes right into your dart process](https://docs.flutter.dev/development/tools/hot-reload). This means that you do not need to re-run your app every time you change something in your code. However if you exchange bigger parts you might need to click on Restart
+  ![](my_app.png)
+
+Every time you save your code by either pressing CTRL+S or by the menu entry File->Save, Flutter will [Hot-Reload your changes right into your dart process](https://docs.flutter.dev/development/tools/hot-reload). This means that you do not need to re-run your app every time you change something in your code. However if you exchange bigger parts you might need to click on Restart (1)
 
 ![](restart.png)
 
@@ -237,42 +241,40 @@ final Widget myNumberWidget = MyNumberWidget(number: 3)
 
 ### Back to coding: Scaffold
 
-Move your cursor inside the brackets of the `MaterialApp()` constructor call and insert
+- Move your cursor inside the brackets of the `MaterialApp()` constructor call and insert
 
-```dart
-home:
-```
+  ```home:```
 
-VsCode then suggests:
+- VsCode then suggests:
 
-![](home.png)
+  ![](home.png)
 
-Press enter, and write `Scaffold()`
+- Press enter, and write `Scaffold()`
 
-VsCode then suggests:
+- VsCode then suggests:
 
-![](scaffold.png)
+  ![](scaffold.png)
 
-Move the selection to `Scaffold()` by pressing your arrow-down key on your keyboard. Press enter when `Scaffold()` is selected.
+- Move the selection to `Scaffold()` by pressing your arrow-down key on your keyboard. Press enter when `Scaffold()` is selected.
 
-Your code should now look like this:
+- Your code should now look like this:
 
-```dart
-import 'package:flutter/material.dart';
+  ```dart
+  import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold());
+  void main() {
+    runApp(const MyApp());
   }
-}
-```
+
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(home: Scaffold());
+    }
+  }
+  ```
 
 *Note: it is always better to let VsCode do the work by only typing until the code-completion (they call it "intellisense") popup shows up with suggestions. Pressing enter while one of the suggestions is selected is always safer because you will avoid typing errors and because VsCode will often also make the necessary import for you, too. However to not make this tutorial unnecessarily long, we won't go through this in every step.*
 
@@ -291,227 +293,230 @@ https://pub.dev/packages?q=platform%3Alinux+is%3Adart3-compatible
 From your development environment, in case of this tutorial VsCode, you can add, update and remove dependencies with the [`dart pub`](https://dart.dev/tools/pub/cmd) and `flutter pub` commands from the terminal.
 In VsCode you can also use the command palette that you can open with CTRL+SHIFT+P.
 
-Open the command palette and type `Dart: Add Dependency`
+- Open the command palette and type `Dart: Add Dependency`
 
-![](dart_add_dep.png)
+  ![](dart_add_dep.png)
 
 ### Yaru.dart
 
-Type `yaru` and select the `yaru` package by pressing enter. The package will now be added to your `pubspec.yaml` file.
+- Type `yaru` and select the `yaru` package by pressing enter. The package will now be added to your `pubspec.yaml` file.
 
-![](yaru.png)
+  ![](yaru.png)
 
-Notice that two tasks are now run by VsCode. Wait until they are done
+- Notice that two tasks are now run by VsCode. ***Wait*** until they are done
 
-![](adding.png)
+  ![](adding.png)
 
 ### YaruTheme
 
-Move your cursor into `MaterialApp`
+- Move your cursor into `MaterialApp`
 
-![](cursor.png)
+  ![](cursor.png)
 
-Press the new key-combination CTRL+., which will open up a new context menu "Quick fix" and move your selection to "Wrap with Builder"
+- Press the new key-combination CTRL+., which will open up a new context menu "Quick fix" and move your selection to "Wrap with Builder"
 
-![](builder.png)
+  ![](builder.png)
 
-Press Enter, and immediately press CTRL+S after, to safe your changes.
+- Press Enter, and immediately press CTRL+S after, to safe your changes.
+  
+  *Note: Saving your file also let's the VsCode flutter extension magically format your code in the background
+  with the [`dart format`](https://dart.dev/tools/dart-format) command.*
 
-Saving your file also let's the VsCode flutter extension magically format your code in the background
-with the [`dart format`](https://dart.dev/tools/dart-format) command.
+- Your resulting main.dart should now look like this:
 
-Your resulting main.dart should now look like this:
+  ```dart
+  import 'package:flutter/material.dart';
 
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return MaterialApp(home: Scaffold());
-    });
+  void main() {
+    runApp(const MyApp());
   }
-}
-```
 
-Replace `Builder` with `YaruTheme`. A auto-complete context menu will pop up.
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
 
-- (1) Is what you write: `YaruTheme`
-- (2) Is your selection after pressing enter
-- (3) Is what will happen after you've pressed enter
-
-![](yaruthemeimport.png)
-
-The `yaru.dart` package is now useable from within your `main.dart` file because the `import 'package:yaru/yaru.dart';` has been added (1) at the top of your file
-
-![](yaruimport.png)
-
-The builder callback from `YaruTheme` needs two more parameters: an parameter of the type `YaruThemeData` and of the type `Widget?`.
-
-![](morepara.png)
-
-Add them separated by `,`behind the `context` parameter of the `builder` callback of `YaruTheme` by writing `yaru, child`. Your code should now look like this:
-
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(home: Scaffold());
-    });
+    @override
+    Widget build(BuildContext context) {
+      return Builder(builder: (context) {
+        return MaterialApp(home: Scaffold());
+      });
+    }
   }
-}
-``` 
+  ```
 
-`yaru` can now be used as a parameter of `MaterialApp`, and the flutter app will switch it's accent colors according to what accent color is selected in your Ubuntu settings app.
+- Replace `Builder` with `YaruTheme`. A auto-complete context menu will pop up.
 
-Set the theme property of Material app to `yaru.theme`and the dark theme property to `yaru.darkTheme`:
+  - (1) Is what you write: `YaruTheme`
+  - (2) Is your selection after pressing enter
+  - (3) Is what will happen after you've pressed enter
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
+    ![](yaruthemeimport.png)
 
-void main() {
-  runApp(const MyApp());
-}
+- The `yaru.dart` package is now useable from within your `main.dart` file because the `import 'package:yaru/yaru.dart';` has been added (1) at the top of your file
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  ![](yaruimport.png)
 
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(
-        theme: yaru.theme, // <-----------
-        darkTheme: yaru.darkTheme, // <-------------
-        home: Scaffold(),
-      );
-    });
+- The builder callback from `YaruTheme` needs two more parameters: an parameter of the type `YaruThemeData` and of the type `Widget?`.
+
+  ![](morepara.png)
+
+- Add them separated by `,`behind the `context` parameter of the `builder` callback of `YaruTheme` by writing `yaru, child`.
+
+  Your code should now look like this:
+
+
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:yaru/yaru.dart';
+
+  void main() {
+    runApp(const MyApp());
   }
-}
-```
 
-As an evidence that your app's accent color and brightness now follow your system let's add a primary color text in the middle of your `Scaffold`. 
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
 
-- Set the `body` property of `Scaffold` to `Center()`
-- Set the child property of `Center` to `Text('Hello Ubuntu')`
-- Set the `style` property of the `Text` to `TextStyle(color: Theme.of(context).primaryColor)`
+    @override
+    Widget build(BuildContext context) {
+      return YaruTheme(builder: (context, yaru, child) {
+        return MaterialApp(home: Scaffold());
+      });
+    }
+  }
+  ``` 
 
-Your code should now look like this, but we ain't done yet:
+  `yaru` can now be used as a parameter of `MaterialApp`, and the flutter app will switch it's accent colors according to what accent color is selected in your Ubuntu settings app.
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
+- Set the theme property of Material app to `yaru.theme` and the dark theme property to `yaru.darkTheme`:
 
-void main() {
-  runApp(const MyApp());
-}
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:yaru/yaru.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  void main() {
+    runApp(const MyApp());
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(
-        theme: yaru.theme,
-        darkTheme: yaru.darkTheme,
-        home: Scaffold(
-          body: Center(
-            child: Text(
-              'Hello Ubuntu',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+      return YaruTheme(builder: (context, yaru, child) {
+        return MaterialApp(
+          theme: yaru.theme, // <-----------
+          darkTheme: yaru.darkTheme, // <-------------
+          home: Scaffold(),
+        );
+      });
+    }
+  }
+  ```
+
+- As an evidence that your app's accent color and brightness now follow your system let's add a primary color text in the middle of your `Scaffold`. 
+
+  - Set the `body` property of `Scaffold` to `Center()`
+  - Set the child property of `Center` to `Text('Hello Ubuntu')`
+  - Set the `style` property of the `Text` to `TextStyle(color: Theme.of(context).primaryColor)`
+
+    Your code should now look like this (but we ain't done yet):
+
+    ```dart
+    import 'package:flutter/material.dart';
+    import 'package:yaru/yaru.dart';
+
+    void main() {
+      runApp(const MyApp());
+    }
+
+    class MyApp extends StatelessWidget {
+      const MyApp({super.key});
+
+      @override
+      Widget build(BuildContext context) {
+        return YaruTheme(builder: (context, yaru, child) {
+          return MaterialApp(
+            theme: yaru.theme,
+            darkTheme: yaru.darkTheme,
+            home: Scaffold(
+              body: Center(
+                child: Text(
+                  'Hello Ubuntu',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
+            ),
+          );
+        });
+      }
+    }
+    ```
+
+- Move your cursor onto `Scaffold` and re-open the quick-fix context menu as before with CTRL+.
+This time, select `Extract Widget` 
+
+  ![](extract_scaffold.png)
+
+- and press enter.
+
+- Look to the top, a little dialog appeared and asks you how the extracted Widget should be named.
+  
+- Call it `_Home` (with a leading underscore):
+
+  ![](look_up.png)
+
+- Press enter.
+
+  Your code should now look like this:
+
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:yaru/yaru.dart';
+
+  void main() {
+    runApp(const MyApp());
+  }
+
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+      return YaruTheme(builder: (context, yaru, child) {
+        return MaterialApp(
+          theme: yaru.theme,
+          darkTheme: yaru.darkTheme,
+          home: _Home(),
+        );
+      });
+    }
+  }
+
+  class _Home extends StatelessWidget {
+    const _Home({
+      super.key,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            'Hello Ubuntu',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ),
       );
-    });
+    }
   }
-}
-```
+  ```
 
-Move your cursor onto `Scaffold` and re-open the quick-fix context menu as before with CTRL+.
-This time, select `Extract Widget` 
+- Save your file and notice how the text is now colored in your system's primary accent color, while the window follows your system dark/light theme preference:
 
-![](extract_scaffold.png)
-
-and press enter.
-
-Look to the top, a little dialog appeared and asks you how the extracted Widget should be named.
-Call it `_Home` (with a leading underscore):
-
-![](look_up.png)
-
-Press enter.
-
-Your code should now look like this:
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(
-        theme: yaru.theme,
-        darkTheme: yaru.darkTheme,
-        home: _Home(),
-      );
-    });
-  }
-}
-
-class _Home extends StatelessWidget {
-  const _Home({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Hello Ubuntu',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-      ),
-    );
-  }
-}
-```
-
-Save your file and notice how the text is now colored in your system's primary accent color, while the window follows your system dark/light theme preference:
-
-![](settings_app.png)
+  ![](settings_app.png)
 
 
 ### Recap
@@ -532,97 +537,102 @@ As you may have observed the app is living inside a GTK window.
 
 This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: `yaru_widgets.dart`
 
-Fire up the VsCode command palette again with CTRL+SHIFT+P, and type `Dart: Add Dependency` as before. Now search for `yaru_widgets` and hit enter when selected.
+- Fire up the VsCode command palette again with CTRL+SHIFT+P
+- and type `Dart: Add Dependency` as before.
+- Now search for `yaru_widgets` and hit enter when selected.
 
-In your main.dart file write `YaruWindowTitleBar` before you call `runApp`.
-- (1) write `YaruWindowTitleBar`
-- (2) Notice the auto complete context menu
-- (3) Notice the nice explanation about what will be imported (eventually even read it) and press enter
+- In your main.dart file write `YaruWindowTitleBar` before you call `runApp`.
+  - (1) write `YaruWindowTitleBar`
+  - (2) Notice the auto complete context menu
+  - (3) Notice the nice explanation about what will be imported (eventually even read it)
 
-![](yaruwindowtitlebar.png)
+    ![](yaruwindowtitlebar.png)
+  - and press enter
 
-In line 3 you should now have this import
-```dart
-import 'package:yaru_widgets/yaru_widgets.dart';
-```
+- In line 3 you should now have this import
+  ```dart
+  import 'package:yaru_widgets/yaru_widgets.dart';
+  ```
 
-Complete the line by using the `await` keyword, and calling `YaruWindowTitleBar.ensureInitialized()`
+- Complete the line by using the `await` keyword, and calling `YaruWindowTitleBar.ensureInitialized()`
 
-![](ensureinit.png)
+  ![](ensureinit.png)
 
-![](quick.png)
+  ![](quick.png)
 
-Use the recommended quick fix by pressing enter when "Add 'async' modifier" is selected
+- Use the recommended quick fix by pressing enter when "Add 'async' modifier" is selected
 
-![](addasync.png)
+  ![](addasync.png)
 
-Your `main` function should now look like this:
+  Your `main` function should now look like this:
 
-```dart
-Future<void> main() async {
-  await YaruWindowTitleBar.ensureInitialized();
-  runApp(const MyApp());
-}
-```
+  ```dart
+  Future<void> main() async {
+    await YaruWindowTitleBar.ensureInitialized();
+    runApp(const MyApp());
+  }
+  ```
 
 - Inside your `_Home` change the `appBar` property of `Scaffold` to `YaruWindowTitleBar()`
 - Inside your `MyApp` change the `debugShowCheckedModeBanner` property to have the value `false` to remove the red debug banner in the window corner
 
-Your code should now look like this:
+  Your code should now look like this:
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:yaru/yaru.dart';
+  import 'package:yaru_widgets/yaru_widgets.dart';
 
-Future<void> main() async {
-  await YaruWindowTitleBar.ensureInitialized();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: yaru.theme,
-        darkTheme: yaru.darkTheme,
-        home: _Home(),
-      );
-    });
+  Future<void> main() async {
+    await YaruWindowTitleBar.ensureInitialized();
+    runApp(const MyApp());
   }
-}
 
-class _Home extends StatelessWidget {
-  const _Home({
-    super.key,
-  });
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: YaruWindowTitleBar(),
-      body: Center(
-        child: Text(
-          'Hello Ubuntu',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
+    @override
+    Widget build(BuildContext context) {
+      return YaruTheme(builder: (context, yaru, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: yaru.theme,
+          darkTheme: yaru.darkTheme,
+          home: _Home(),
+        );
+      });
+    }
+  }
+
+  class _Home extends StatelessWidget {
+    const _Home({
+      super.key,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: YaruWindowTitleBar(),
+        body: Center(
+          child: Text(
+            'Hello Ubuntu',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
-```
+  ```
 
-Since yaru_widgets also modified the Linux specific files we did not look into (yet) you need to restart the app this time completely. Stop it, and start it again.
+Since yaru_widgets also modified the Linux specific files we did not look into (yet) you need to restart the app this time completely.
 
-Your app should now look like this (yes no round corners yet!):
+- Stop it, and start it again.
 
-![](noroundyaru.png)
+  Your app should now look like this (yes no round corners yet!):
+
+  ![](noroundyaru.png)
 
 #### New things learned
 
@@ -638,220 +648,223 @@ We could totally only change the lines that need to be changed, however this wou
 
 - add `handy_window` like you've added the other dependencies before
 - open `my_application.cc` inside the `Linux` directory
-- Exchange the whole file with the following (you can also change the default, min and max sizes of your window inside this file):
+- Exchange the ***whole*** file with the following (you can also change the default, min and max sizes of your window inside this file):
 
-```cc
-#include "my_application.h"
+  ```cc
+  #include "my_application.h"
 
-#include <flutter_linux/flutter_linux.h>
-#ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
-#endif
+  #include <flutter_linux/flutter_linux.h>
+  #ifdef GDK_WINDOWING_X11
+  #include <gdk/gdkx.h>
+  #endif
 
-#include <handy.h>
+  #include <handy.h>
 
-#include "flutter/generated_plugin_registrant.h"
+  #include "flutter/generated_plugin_registrant.h"
 
-struct _MyApplication {
-  GtkApplication parent_instance;
-  char** dart_entrypoint_arguments;
-};
+  struct _MyApplication {
+    GtkApplication parent_instance;
+    char** dart_entrypoint_arguments;
+  };
 
-G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+  G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
-// Implements GApplication::activate.
-static void my_application_activate(GApplication* application) {
-  MyApplication* self = MY_APPLICATION(application);
+  // Implements GApplication::activate.
+  static void my_application_activate(GApplication* application) {
+    MyApplication* self = MY_APPLICATION(application);
 
-#ifdef NDEBUG
-  // Activate an existing app instance if already running but only in
-  // production/release mode. Allow multiple instances in debug mode for
-  // easier debugging and testing.
-  GList* windows = gtk_application_get_windows(GTK_APPLICATION(application));
-  if (windows) {
-    gtk_window_present(GTK_WINDOW(windows->data));
-    return;
-  }
-#endif
+  #ifdef NDEBUG
+    // Activate an existing app instance if already running but only in
+    // production/release mode. Allow multiple instances in debug mode for
+    // easier debugging and testing.
+    GList* windows = gtk_application_get_windows(GTK_APPLICATION(application));
+    if (windows) {
+      gtk_window_present(GTK_WINDOW(windows->data));
+      return;
+    }
+  #endif
 
-  GtkWindow* window = GTK_WINDOW(hdy_application_window_new());
-  gtk_window_set_application(window, GTK_APPLICATION(application));
+    GtkWindow* window = GTK_WINDOW(hdy_application_window_new());
+    gtk_window_set_application(window, GTK_APPLICATION(application));
 
-  GdkGeometry geometry_min;
-  geometry_min.min_width = 680;
-  geometry_min.min_height = 600;
-  gtk_window_set_geometry_hints(window, nullptr, &geometry_min, GDK_HINT_MIN_SIZE);
+    GdkGeometry geometry_min;
+    geometry_min.min_width = 680;
+    geometry_min.min_height = 600;
+    gtk_window_set_geometry_hints(window, nullptr, &geometry_min, GDK_HINT_MIN_SIZE);
 
-  gtk_window_set_default_size(window, 1280, 720);
-  gtk_widget_show(GTK_WIDGET(window));
+    gtk_window_set_default_size(window, 1280, 720);
+    gtk_widget_show(GTK_WIDGET(window));
 
-  g_autoptr(FlDartProject) project = fl_dart_project_new();
-  fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
+    g_autoptr(FlDartProject) project = fl_dart_project_new();
+    fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
 
-  FlView* view = fl_view_new(project);
-  gtk_widget_show(GTK_WIDGET(view));
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
+    FlView* view = fl_view_new(project);
+    gtk_widget_show(GTK_WIDGET(view));
+    gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
-  fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+    fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
-  gtk_widget_grab_focus(GTK_WIDGET(view));
-}
-
-static gint my_application_command_line(GApplication *application, GApplicationCommandLine *command_line) {
-  MyApplication *self = MY_APPLICATION(application);
-  gchar **arguments = g_application_command_line_get_arguments(command_line, nullptr);
-  self->dart_entrypoint_arguments = g_strdupv(arguments + 1);
-
-  g_autoptr(GError) error = nullptr;
-  if (!g_application_register(application, nullptr, &error)) {
-    g_warning("Failed to register: %s", error->message);
-    return 1;
+    gtk_widget_grab_focus(GTK_WIDGET(view));
   }
 
-  hdy_init();
+  static gint my_application_command_line(GApplication *application, GApplicationCommandLine *command_line) {
+    MyApplication *self = MY_APPLICATION(application);
+    gchar **arguments = g_application_command_line_get_arguments(command_line, nullptr);
+    self->dart_entrypoint_arguments = g_strdupv(arguments + 1);
 
-  g_application_activate(application);
-  return 0;
-}
+    g_autoptr(GError) error = nullptr;
+    if (!g_application_register(application, nullptr, &error)) {
+      g_warning("Failed to register: %s", error->message);
+      return 1;
+    }
 
-// Implements GObject::dispose.
-static void my_application_dispose(GObject *object) {
-  MyApplication* self = MY_APPLICATION(object);
-  g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
-  G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
-}
+    hdy_init();
 
-static void my_application_class_init(MyApplicationClass* klass) {
-  G_APPLICATION_CLASS(klass)->activate = my_application_activate;
-  G_APPLICATION_CLASS(klass)->command_line = my_application_command_line;
-  G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
-}
+    g_application_activate(application);
+    return 0;
+  }
 
-static void my_application_init(MyApplication* self) {}
+  // Implements GObject::dispose.
+  static void my_application_dispose(GObject *object) {
+    MyApplication* self = MY_APPLICATION(object);
+    g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
+    G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
+  }
 
-MyApplication* my_application_new() {
-  return MY_APPLICATION(g_object_new(
-      my_application_get_type(), "application-id", APPLICATION_ID, "flags",
-      G_APPLICATION_HANDLES_COMMAND_LINE | G_APPLICATION_HANDLES_OPEN,
-      nullptr));
-}
-```
+  static void my_application_class_init(MyApplicationClass* klass) {
+    G_APPLICATION_CLASS(klass)->activate = my_application_activate;
+    G_APPLICATION_CLASS(klass)->command_line = my_application_command_line;
+    G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
+  }
+
+  static void my_application_init(MyApplication* self) {}
+
+  MyApplication* my_application_new() {
+    return MY_APPLICATION(g_object_new(
+        my_application_get_type(), "application-id", APPLICATION_ID, "flags",
+        G_APPLICATION_HANDLES_COMMAND_LINE | G_APPLICATION_HANDLES_OPEN,
+        nullptr));
+  }
+  ```
+
+Next:
 
 - open `CMakeLists.txt`
-- replace the whole file with the following file (make sure that BINARY_NAME and APPLICATION_ID match your app)
+- replace the ***whole*** file with the following file (***make sure*** that BINARY_NAME and APPLICATION_ID match ***your*** app and org/com names)
 
-```cmake
-cmake_minimum_required(VERSION 3.10)
-project(runner LANGUAGES CXX)
+  ```cmake
+  cmake_minimum_required(VERSION 3.10)
+  project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "my_yaru_app")
-set(APPLICATION_ID "com.test.my_yaru_app")
+  set(BINARY_NAME "my_yaru_app")
+  set(APPLICATION_ID "com.test.my_yaru_app")
 
-cmake_policy(SET CMP0063 NEW)
+  cmake_policy(SET CMP0063 NEW)
 
-set(USE_LIBHANDY ON)
+  set(USE_LIBHANDY ON)
 
-set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
+  set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
 
-# Configure build options.
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE
-    STRING "Flutter build mode" FORCE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-    "Debug" "Profile" "Release")
-endif()
+  # Configure build options.
+  if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE
+      STRING "Flutter build mode" FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+      "Debug" "Profile" "Release")
+  endif()
 
-# Compilation settings that should be applied to most targets.
-function(APPLY_STANDARD_SETTINGS TARGET)
-  target_compile_features(${TARGET} PUBLIC cxx_std_14)
-  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
-  target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
-  target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
-endfunction()
+  # Compilation settings that should be applied to most targets.
+  function(APPLY_STANDARD_SETTINGS TARGET)
+    target_compile_features(${TARGET} PUBLIC cxx_std_14)
+    target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+    target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
+    target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
+  endfunction()
 
-set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+  set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
 
-# Flutter library and tool build rules.
-add_subdirectory(${FLUTTER_MANAGED_DIR})
+  # Flutter library and tool build rules.
+  add_subdirectory(${FLUTTER_MANAGED_DIR})
 
-# System-level dependencies.
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+  # System-level dependencies.
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
 
-add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
+  add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
 
-# Application build
-add_executable(${BINARY_NAME}
-  "main.cc"
-  "my_application.cc"
-  "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
-)
-apply_standard_settings(${BINARY_NAME})
-target_link_libraries(${BINARY_NAME} PRIVATE flutter)
-target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
-add_dependencies(${BINARY_NAME} flutter_assemble)
-# Only the install-generated bundle's copy of the executable will launch
-# correctly, since the resources must in the right relative locations. To avoid
-# people trying to run the unbundled copy, put it in a subdirectory instead of
-# the default top-level location.
-set_target_properties(${BINARY_NAME}
-  PROPERTIES
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
-)
+  # Application build
+  add_executable(${BINARY_NAME}
+    "main.cc"
+    "my_application.cc"
+    "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
+  )
+  apply_standard_settings(${BINARY_NAME})
+  target_link_libraries(${BINARY_NAME} PRIVATE flutter)
+  target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
+  add_dependencies(${BINARY_NAME} flutter_assemble)
+  # Only the install-generated bundle's copy of the executable will launch
+  # correctly, since the resources must in the right relative locations. To avoid
+  # people trying to run the unbundled copy, put it in a subdirectory instead of
+  # the default top-level location.
+  set_target_properties(${BINARY_NAME}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
+  )
 
-# Generated plugin build rules, which manage building the plugins and adding
-# them to the application.
-include(flutter/generated_plugins.cmake)
+  # Generated plugin build rules, which manage building the plugins and adding
+  # them to the application.
+  include(flutter/generated_plugins.cmake)
 
 
-# === Installation ===
-# By default, "installing" just makes a relocatable bundle in the build
-# directory.
-set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
-endif()
+  # === Installation ===
+  # By default, "installing" just makes a relocatable bundle in the build
+  # directory.
+  set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
+  if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+  endif()
 
-# Start with a clean build bundle directory every time.
-install(CODE "
-  file(REMOVE_RECURSE \"${BUILD_BUNDLE_DIR}/\")
-  " COMPONENT Runtime)
+  # Start with a clean build bundle directory every time.
+  install(CODE "
+    file(REMOVE_RECURSE \"${BUILD_BUNDLE_DIR}/\")
+    " COMPONENT Runtime)
 
-set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
-set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+  set(INSTALL_BUNDLE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/data")
+  set(INSTALL_BUNDLE_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
-  COMPONENT Runtime)
-
-install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
-  COMPONENT Runtime)
-
-install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
-  COMPONENT Runtime)
-
-if(PLUGIN_BUNDLED_LIBRARIES)
-  install(FILES "${PLUGIN_BUNDLED_LIBRARIES}"
-    DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
     COMPONENT Runtime)
-endif()
 
-# Fully re-copy the assets directory on each build to avoid having stale files
-# from a previous install.
-set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
-install(CODE "
-  file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
-  " COMPONENT Runtime)
-install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
-  DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
-
-# Install the AOT library on non-Debug builds only.
-if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
-  install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+  install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
     COMPONENT Runtime)
-endif()
-```
 
-Since handy_window also modified the Linux specific files you need to restart the app this time completely. Stop it, and start it again.
+  install(FILES "${FLUTTER_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+    COMPONENT Runtime)
+
+  if(PLUGIN_BUNDLED_LIBRARIES)
+    install(FILES "${PLUGIN_BUNDLED_LIBRARIES}"
+      DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+      COMPONENT Runtime)
+  endif()
+
+  # Fully re-copy the assets directory on each build to avoid having stale files
+  # from a previous install.
+  set(FLUTTER_ASSET_DIR_NAME "flutter_assets")
+  install(CODE "
+    file(REMOVE_RECURSE \"${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}\")
+    " COMPONENT Runtime)
+  install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
+    DESTINATION "${INSTALL_BUNDLE_DATA_DIR}" COMPONENT Runtime)
+
+  # Install the AOT library on non-Debug builds only.
+  if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+    install(FILES "${AOT_LIBRARY}" DESTINATION "${INSTALL_BUNDLE_LIB_DIR}"
+      COMPONENT Runtime)
+  endif()
+  ```
+
+Since handy_window also modified the Linux specific files you need to restart the app this time completely. 
+- Stop it, and start it again.
 
 ### Success!
 
@@ -885,76 +898,76 @@ In this tutorial we create a master/details-app, because this type of app is pre
 - write `pageBuilder` beneath the `tileBuilder` property
 - press enter after you selected `(context, index) {}`  with pressing the arrow-down key
 
-Your `_Home` code should now look like this (not done yet):
+  Your `_Home` code should now look like this (not done yet):
 
-```dart
-class _Home extends StatelessWidget {
-  const _Home({
-    super.key,
-  });
+  ```dart
+  class _Home extends StatelessWidget {
+    const _Home({
+      super.key,
+    });
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: YaruWindowTitleBar(),
-      body: YaruMasterDetailPage(
-        length: 2,
-        tileBuilder: (context, index, selected) {},
-        pageBuilder: (context, index) {},
-      ),
-    );
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: YaruWindowTitleBar(),
+        body: YaruMasterDetailPage(
+          length: 2,
+          tileBuilder: (context, index, selected) {},
+          pageBuilder: (context, index) {},
+        ),
+      );
+    }
   }
-}
-```
+  ```
 
 - inside the `tileBuilder` callback return a different `YaruMasterTile()` depending if the value of `index` is `0` or not
 - inside the `pageBuilder` callback return a different `Widget` depending if the value of `index` is `0` or not
 
-Your `_Home` could now look like this, as a starting point:
+  Your `_Home` could now look like this, as a starting point:
 
-```dart
-class _Home extends StatelessWidget {
-  const _Home({
-    super.key,
-  });
+  ```dart
+  class _Home extends StatelessWidget {
+    const _Home({
+      super.key,
+    });
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: YaruWindowTitleBar(),
-      body: YaruMasterDetailPage(
-        length: 2,
-        tileBuilder: (context, index, selected) {
-          if (index == 0) {
-            return YaruMasterTile(title: Text('Page 1'));
-          } else {
-            return YaruMasterTile(title: Text('Page 2'));
-          }
-        },
-        pageBuilder: (context, index) {
-          if (index == 0) {
-            return Center(
-              child: Text('Hello Ubuntu'),
-            );
-          } else {
-            return Center(
-              child: Text('Hello Yaru'),
-            );
-          }
-        },
-      ),
-    );
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: YaruWindowTitleBar(),
+        body: YaruMasterDetailPage(
+          length: 2,
+          tileBuilder: (context, index, selected) {
+            if (index == 0) {
+              return YaruMasterTile(title: Text('Page 1'));
+            } else {
+              return YaruMasterTile(title: Text('Page 2'));
+            }
+          },
+          pageBuilder: (context, index) {
+            if (index == 0) {
+              return Center(
+                child: Text('Hello Ubuntu'),
+              );
+            } else {
+              return Center(
+                child: Text('Hello Yaru'),
+              );
+            }
+          },
+        ),
+      );
+    }
   }
-}
-```
+  ```
 
-With this code, your app would look like this:
+  With this code, your app would look like this:
 
-![](donenoicons.png)
+  ![](donenoicons.png)
 
 ### yaru_icons.dart
 
-The thin stroked, sleek yaru_icons are elemental for the full Yaru look and fit perfectly to the Ubuntu font.
+The thin stroked, sleek [yaru_icons](https://github.com/ubuntu/yaru_icons.dart) are elemental for the full Yaru look and fit perfectly to the [Ubuntu font](https://design.ubuntu.com/font).
 Icons can be used anywhere in a Flutter app, since they are Widgets. In our example we chose them to use as a leading widget in your master view.
 
 - add `yaru_icons` as a dependency like you added the previous dependencies
@@ -962,83 +975,86 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
 - There is a nice overview of currently available icons on this website (also made with flutter): https://ubuntu.github.io/yaru_icons.dart/
 - to finally get rid of all blue underlines (warnings) run the command `dart fix --apply`
 
-The final version of your `main.dart`code for this tutorial could be the following, depending on what pages and tiles you've chosen to show:
+  The current version of your `main.dart` code for this tutorial could be the following, depending on what pages and tiles you've chosen to show:
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:yaru/yaru.dart';
-import 'package:yaru_icons/yaru_icons.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:yaru/yaru.dart';
+  import 'package:yaru_icons/yaru_icons.dart';
+  import 'package:yaru_widgets/yaru_widgets.dart';
 
-Future<void> main() async {
-  await YaruWindowTitleBar.ensureInitialized();
-  runApp(const MyApp());
-}
+  Future<void> main() async {
+    await YaruWindowTitleBar.ensureInitialized();
+    runApp(const MyApp());
+  }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return YaruTheme(builder: (context, yaru, child) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: yaru.theme,
-        darkTheme: yaru.darkTheme,
-        home: const _Home(),
+    @override
+    Widget build(BuildContext context) {
+      return YaruTheme(builder: (context, yaru, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: yaru.theme,
+          darkTheme: yaru.darkTheme,
+          home: const _Home(),
+        );
+      });
+    }
+  }
+
+  class _Home extends StatelessWidget {
+    const _Home();
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: const YaruWindowTitleBar(),
+        body: YaruMasterDetailPage(
+          length: 2,
+          tileBuilder: (context, index, selected) {
+            if (index == 0) {
+              return const YaruMasterTile(
+                leading: Icon(YaruIcons.ubuntu_logo),
+                title: Text('Page 1'),
+              );
+            } else {
+              return const YaruMasterTile(
+                leading: Icon(YaruIcons.colors),
+                title: Text('Page 2'),
+              );
+            }
+          },
+          pageBuilder: (context, index) {
+            if (index == 0) {
+              return const Center(
+                child: Text('Hello Ubuntu'),
+              );
+            } else {
+              return const Center(
+                child: Text('Hello Yaru'),
+              );
+            }
+          },
+        ),
       );
-    });
+    }
   }
-}
-
-class _Home extends StatelessWidget {
-  const _Home();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const YaruWindowTitleBar(),
-      body: YaruMasterDetailPage(
-        length: 2,
-        tileBuilder: (context, index, selected) {
-          if (index == 0) {
-            return const YaruMasterTile(
-              leading: Icon(YaruIcons.ubuntu_logo),
-              title: Text('Page 1'),
-            );
-          } else {
-            return const YaruMasterTile(
-              leading: Icon(YaruIcons.colors),
-              title: Text('Page 2'),
-            );
-          }
-        },
-        pageBuilder: (context, index) {
-          if (index == 0) {
-            return const Center(
-              child: Text('Hello Ubuntu'),
-            );
-          } else {
-            return const Center(
-              child: Text('Hello Yaru'),
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-```
+  ```
 
 ### Recap and design ideas
 
 - notice the four rounded window corners
 - notice the elegant window border and shadows
 - the whole window is now 100% flutter and you could add any Flutter Widget you like
+  
   ![](hundred.png)
+
 - Idea: add a split YaruWindowTitleBar
 - Idea: Wrap the pages in `YaruDetailPage` and let them have their own `YaruWindowTitleBar()`
 - Possible `_Home` code
+
     ```dart
     class _Home extends StatelessWidget {
     const _Home();
@@ -1088,10 +1104,9 @@ class _Home extends StatelessWidget {
     }
     }
     ```
-- Resulting UI:
-  ![](better.png)
+- Resulting UI (However those are just ideas which should not limit your ideas in any way!)
 
-However those are just ideas which should not limit your ideas in any way!
+  ![](better.png)  
 
 ### Organize your code!
 
@@ -1103,12 +1118,16 @@ In addition to `material.dart`, `yaru_widgets.dart` offers a ton of good looking
 
 Check them out by either browsing https://ubuntu.github.io/yaru_widgets.dart/#/ or by installing `sudo snap install yaru-widgets-example`
 
-![](example.png)
+||
+|-|
+|![](example.png)|
+|*All widgets have a short example page with the source code how to use them.*|
 
-All widgets have a short example page with the source code how to use them.
-Hopefully this tutorial was helpful, thanks for coding!
+## Thanks for reading
 
+Hopefully this tutorial was helpful, thanks for reading!
 
+-----------------
 ## Knowledge links and recommended dart libraries
 ### Freedesktop and other Linux specific API implementations in dart
 
