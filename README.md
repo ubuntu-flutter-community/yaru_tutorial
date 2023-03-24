@@ -208,7 +208,7 @@ Calling the function:
 incrementByOne(myParameter: 3);
 ```
 
-To create an instance of a class one needs to call the [constructor](https://dart.dev/language/constructors) "function" (called method if part of a class).
+To create an instance of a class one needs to call the [constructor](https://dart.dev/language/constructors) "function" (to be concrete "method" because this function is defined inside class).
 
 Flutter widget classes almost always use named parameters, which is increasingly useful the more parameters a Widget has when you call its constructor method.
 
