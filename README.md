@@ -526,8 +526,9 @@ Alright, take a deep breath!
 The basic yaru theme and colors are in but we got more things to do:
 
 1) **Make the window consist of 100% flutter widgets with client side window decorations** <-- next
-2) use yaru_icons
-3) Make the window have 4 founded corners
+2) Make the window have 4 founded corners
+3) Create a master detail app
+4) use yaru_icons
 
 ### yaru_widgets.dart
 
@@ -535,7 +536,7 @@ As you may have observed the app is living inside a GTK window.
 
 ![](gtkwindow.png)
 
-This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: `yaru_widgets.dart`
+This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: [`yaru_widgets.dart`](https://github.com/ubuntu/yaru_widgets.dart)
 
 - Fire up the VsCode command palette again with CTRL+SHIFT+P
 - and type `Dart: Add Dependency` as before.
