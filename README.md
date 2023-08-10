@@ -2,6 +2,29 @@
 
 This is a **beginner** tutorial for those new to the Dart programming language, new to programming languages in general and new to the Yaru design.
 
+### Wait: Already an experienced programmer but new to ubuntu yaru flutter apps?
+
+Skip this tutorial and clone one of our template repositories, created with best practices, client side decorations, rounded bottom corners and CI in place, and take them as a starting point:
+
+<table>
+  <tr>
+    <th>Calculator</th>
+    <th>Licenses</th>
+    <th>Numbers</th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://github.com/ubuntu-flutter-community/calculator"><img width="200" src="https://raw.githubusercontent.com/ubuntu-flutter-community/calculator/main/screenshot.png"/></a>
+    </td>
+    <td>
+      <a href="https://github.com/ubuntu-flutter-community/licenses"><img width="400" src="https://raw.githubusercontent.com/ubuntu-flutter-community/licenses/main/screenshots/linux.png"/></a>
+    </td>
+    <td>
+      <a href="https://github.com/ubuntu-flutter-community/numbers"><img width="400" src="https://raw.githubusercontent.com/ubuntu-flutter-community/numbers/main/screenshots/linux.png"/></a>
+    </td>
+  </tr>
+</table>
+
 ## Intro
 
 The preinstalled applications on Ubuntu are quite diverse in their programming language and tooling origins. Some examples are the Firefox internet browser and the Thunderbird e-mail client both being C++ and JavaScript applications, the Libre-Office suite being written in C++, XML, and Java and gnome-files (A.K.A. nautilus) which is written in C with gtk.
