@@ -913,7 +913,7 @@ In this tutorial we create a master/details-app, because this type of app is pre
         appBar: YaruWindowTitleBar(),
         body: YaruMasterDetailPage(
           length: 2,
-          tileBuilder: (context, index, selected) {},
+          tileBuilder: (context, index, selected, availableWidth) {},
           pageBuilder: (context, index) {},
         ),
       );
@@ -938,7 +938,7 @@ In this tutorial we create a master/details-app, because this type of app is pre
         appBar: YaruWindowTitleBar(),
         body: YaruMasterDetailPage(
           length: 2,
-          tileBuilder: (context, index, selected) {
+          tileBuilder: (context, index, selected, availableWidth) {
             if (index == 0) {
               return YaruMasterTile(title: Text('Page 1'));
             } else {
@@ -1014,7 +1014,7 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
         appBar: const YaruWindowTitleBar(),
         body: YaruMasterDetailPage(
           length: 2,
-          tileBuilder: (context, index, selected) {
+          tileBuilder: (context, index, selected, availableWidth) {
             if (index == 0) {
               return const YaruMasterTile(
                 leading: Icon(YaruIcons.ubuntu_logo),
@@ -1066,7 +1066,7 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
         body: YaruMasterDetailPage(
             length: 2,
             appBar: const YaruWindowTitleBar(),
-            tileBuilder: (context, index, selected) {
+            tileBuilder: (context, index, selected, availableWidth) {
             if (index == 0) {
                 return const YaruMasterTile(
                 leading: Icon(YaruIcons.ubuntu_logo),
