@@ -6,24 +6,9 @@ This is a **beginner** tutorial for those new to the Dart programming language, 
 
 Skip this tutorial and clone one of our template repositories, created with best practices, client side decorations, rounded bottom corners and CI in place, and take them as a starting point:
 
-<table>
-  <tr>
-    <th>Calculator</th>
-    <th>Licenses</th>
-    <th>Numbers</th>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://github.com/ubuntu-flutter-community/calculator"><img width="200" src="https://raw.githubusercontent.com/ubuntu-flutter-community/calculator/main/screenshot.png"/></a>
-    </td>
-    <td>
-      <a href="https://github.com/ubuntu-flutter-community/licenses"><img width="400" src="https://raw.githubusercontent.com/ubuntu-flutter-community/licenses/main/screenshots/linux.png"/></a>
-    </td>
-    <td>
-      <a href="https://github.com/ubuntu-flutter-community/numbers"><img width="400" src="https://raw.githubusercontent.com/ubuntu-flutter-community/numbers/main/screenshots/linux.png"/></a>
-    </td>
-  </tr>
-</table>
+| Calculator | Licenses | Numbers |
+| - | - | - |
+|![](https://raw.githubusercontent.com/ubuntu-flutter-community/calculator/main/screenshot.png)|![](https://raw.githubusercontent.com/ubuntu-flutter-community/licenses/main/screenshots/linux.png) |![](https://raw.githubusercontent.com/ubuntu-flutter-community/numbers/main/screenshots/linux.png) |
 
 ## Intro
 
@@ -84,23 +69,23 @@ The following lines will install the dependencies for Flutter Linux apps, create
 
 - Open VsCode, click on the extension icon in the left sidebar (1), type "Flutter" and click "Install" on the first entry (3), this should be the Flutter extension by Dart Code.
 
-  ![](flutter_ext.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/flutter_ext.png)
 
 ## Let's get started: flutter create
 
 VsCode offers a command palette which you can open with either CTRL+SHIFT+P or by clicking on the :gear: icon 
 
-![](command_palette.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/command_palette.png)
 
 We ***could*** now type "Flutter new project", but we don't!
 
-![](flutter_new.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/flutter_new.png)
 
 However, since we want to make amount of auto created files as small as possible to make the management as easy as possible, we want to specify the platforms for our new project.
 
 - Open the integrated terminal in vscode if it is not already opened
 
-  ![](new_terminal.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/new_terminal.png)
 
 - And run the following command to create a new Flutter project for Linux only (you can add more platforms at any point if you want) and specify the name of your organization/company and your appname:
 
@@ -109,7 +94,7 @@ However, since we want to make amount of auto created files as small as possible
   ```
 - Flutter created a small template app for us. Let's take a look at the three locations we need to visit first:
 
-  ![](first_locations.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/first_locations.png)
 
   (1) Is the `lib` directory where all of our dart code lives. For now a single `main.dart` file should be enough. All platforms our app wants to be available for gets its own directory. In our case only the `Linux` directory (2). We will come this back later. To define metadata of our app and the dependencies we want to use we need the `pubspec.yaml` file (3).
 
@@ -117,9 +102,9 @@ However, since we want to make amount of auto created files as small as possible
 
 - Now click on `main.dart` (1) to open the file in your editor and click on the small `Run` label above the `void main()` declaration (2) to run the app for the first time
 
-  ![](first_run.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/first_run.png)
 
-| ![space-1.jpg](not_pretty.png) | 
+| ![space-1.jpg](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/not_pretty.png) | 
 |:--:| 
 | *(Caution, it is not pretty yet)* |
   
@@ -130,11 +115,11 @@ The Flutter template app is quite verbose explaining what it contains but we don
 
 - Delete everything in your main.dart file below line 5
 
-  ![](delete.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/delete.png)
 
 Dart will now complain that the class `MyApp` does not exist any longer. Because we've just deleted it on purpose.
 
-![](no_my_app.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/no_my_app.png)
 
 ### First snipped: stle
 
@@ -151,21 +136,21 @@ Now a popup should ... pop-up. (if not press CTRL+ENTER, if this does not help e
 - (2) is the detected snippet `Flutter Stateless Widget`
 - (3) is a little explanation what will happen if you press ENTER now, which you please do now:
 
-![](stle.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/stle.png)
 
 Something happened! Now please stay calm, take your fingers off the keyboard for a moment and look at what you got.
 
 - The created snippet left a "multi-cursor" in the places which change if you change the name of your `StatelessWidget`.
 
-  ![](multi_cursor.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/multi_cursor.png)
 
 - Just start writing `MyApp` now and the text will be written into both places at once. When you are done press the ESC key on your keyboard to stop the multi-cursor. Pressing CTRL+S will save your code and the changes will be hot-reloaded immediately into your app:
 
-  ![](my_app.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/my_app.png)
 
 Every time you save your code by either pressing CTRL+S or by the menu entry File->Save, Flutter will [Hot-Reload your changes right into your dart process](https://docs.flutter.dev/development/tools/hot-reload). This means that you do not need to re-run your app every time you change something in your code. However if you exchange bigger parts you might need to click on Restart (1)
 
-![](restart.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/restart.png)
 
 ### First recap
 
@@ -174,7 +159,7 @@ Every time you save your code by either pressing CTRL+S or by the menu entry Fil
 - (3) Is your [class](https://dart.dev/language/classes) `MyApp` which [extends](https://dart.dev/language/extend) the class [`StatelessWidget`](https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html).
 Extending this class forces your app to implement the [`Widget build(BuildContext context)`](https://api.flutter.dev/flutter/widgets/StatelessWidget/build.html) method, which you do by returning the Widget `PlaceHolder`.
 
-![](import_main_my_app.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/import_main_my_app.png)
 
 ### dart keywords used
 
@@ -193,11 +178,11 @@ Extending this class forces your app to implement the [`Widget build(BuildContex
 
 Mark `const Placeholder`
 
-![](mark_placeholder.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/mark_placeholder.png)
 
 and write `MaterialApp` which opens a popup with a suggested class, press ENTER to replace `PlaceHolder` with `MaterialApp()`
 
-![](materialapp.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/materialapp.png)
 
 ### Quick look into named parameters in dart
 
@@ -270,13 +255,13 @@ final Widget myNumberWidget = MyNumberWidget(number: 3)
 
 - VsCode then suggests:
 
-  ![](home.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/home.png)
 
 - Press enter, and write `Scaffold()`
 
 - VsCode then suggests:
 
-  ![](scaffold.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/scaffold.png)
 
 - Move the selection to `Scaffold()` by pressing your arrow-down key on your keyboard. Press enter when `Scaffold()` is selected.
 
@@ -318,27 +303,27 @@ In VsCode you can also use the command palette that you can open with CTRL+SHIFT
 
 - Open the command palette and type `Dart: Add Dependency`
 
-  ![](dart_add_dep.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/dart_add_dep.png)
 
 ### Yaru.dart
 
 - Type `yaru` and select the `yaru` package by pressing enter. The package will now be added to your `pubspec.yaml` file.
 
-  ![](yaru.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/yaru.png)
 
 - Notice that two tasks are now run by VsCode. ***Wait*** until they are done
 
-  ![](adding.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/adding.png)
 
 ### YaruTheme
 
 - Move your cursor into `MaterialApp`
 
-  ![](cursor.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/cursor.png)
 
 - Press the new key-combination CTRL+., which will open up a new context menu "Quick fix" and move your selection to "Wrap with Builder"
 
-  ![](builder.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/builder.png)
 
 - Press Enter, and immediately press CTRL+S after, to safe your changes.
   
@@ -372,15 +357,15 @@ In VsCode you can also use the command palette that you can open with CTRL+SHIFT
   - (2) Is your selection after pressing enter
   - (3) Is what will happen after you've pressed enter
 
-    ![](yaruthemeimport.png)
+    ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/yaruthemeimport.png)
 
 - The `yaru.dart` package is now useable from within your `main.dart` file because the `import 'package:yaru/yaru.dart';` has been added (1) at the top of your file
 
-  ![](yaruimport.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/yaruimport.png)
 
 - The builder callback from `YaruTheme` needs two more parameters: an parameter of the type `YaruThemeData` and of the type `Widget?`.
 
-  ![](morepara.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/morepara.png)
 
 - Add them separated by `,`behind the `context` parameter of the `builder` callback of `YaruTheme` by writing `yaru, child`.
 
@@ -479,7 +464,7 @@ In VsCode you can also use the command palette that you can open with CTRL+SHIFT
 - Move your cursor onto `Scaffold` and re-open the quick-fix context menu as before with CTRL+.
 This time, select `Extract Widget` 
 
-  ![](extract_scaffold.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/extract_scaffold.png)
 
 - and press enter.
 
@@ -487,7 +472,7 @@ This time, select `Extract Widget`
   
 - Call it `_Home` (with a leading underscore):
 
-  ![](look_up.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/look_up.png)
 
 - Press enter.
 
@@ -539,7 +524,7 @@ This time, select `Extract Widget`
 
 - Save your file and notice how the text is now colored in your system's primary accent color, while the window follows your system dark/light theme preference:
 
-  ![](settings_app.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/settings_app.png)
 
 
 ### Recap
@@ -557,7 +542,7 @@ The basic yaru theme and colors are in but we got more things to do:
 
 As you may have observed the app is living inside a GTK window.
 
-![](gtkwindow.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/gtkwindow.png)
 
 This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: [`yaru_widgets.dart`](https://github.com/ubuntu/yaru_widgets.dart)
 
@@ -570,7 +555,7 @@ This is totally fine as it is because it works. However we aim to have the best 
   - (2) Notice the auto complete context menu
   - (3) Notice the nice explanation about what will be imported (eventually even read it)
 
-    ![](yaruwindowtitlebar.png)
+    ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/yaruwindowtitlebar.png)
   - and press enter
 
 - In line 3 you should now have this import
@@ -580,13 +565,13 @@ This is totally fine as it is because it works. However we aim to have the best 
 
 - Complete the line by using the `await` keyword, and calling `YaruWindowTitleBar.ensureInitialized()`
 
-  ![](ensureinit.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/ensureinit.png)
 
-  ![](quick.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/quick.png)
 
 - Use the recommended quick fix by pressing enter when "Add 'async' modifier" is selected
 
-  ![](addasync.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/addasync.png)
 
   Your `main` function should now look like this:
 
@@ -656,7 +641,7 @@ Since yaru_widgets also modified the Linux specific files we did not look into (
 
   Your app should now look like this (yes no round corners yet!):
 
-  ![](noroundyaru.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/noroundyaru.png)
 
 #### New things learned
 
@@ -894,18 +879,18 @@ Since handy_window also modified the Linux specific files you need to restart th
 
 Tadah!!! Your app should now look like this:
 
-![](almostdone.png)
+![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/almostdone.png)
 
 ## Types of apps + your ideas
 
 Most of the desktop apps we've encountered could be classified into one of the following "concepts":
 
 - Master/detail apps
-  ![](m_d.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/m_d.png)
 - single page apps *(the weather in Düsseldorf is kinda depressing atm)*
-  ![](singlepage.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/singlepage.png)
 - wizard apps
-  ![](wizard.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/wizard.png)
 
 That does not mean there aren't more types of apps and most importantly this should not limit your ideas and creativity in any way.
 
@@ -987,7 +972,7 @@ In this tutorial we create a master/details-app, because this type of app is pre
 
   With this code, your app would look like this:
 
-  ![](donenoicons.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/donenoicons.png)
 
 ### yaru_icons.dart
 
@@ -1073,7 +1058,7 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
 - notice the elegant window border and shadows
 - the whole window is now 100% flutter and you could add any Flutter Widget you like
   
-  ![](hundred.png)
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/hundred.png)
 
 - Idea: add a split YaruWindowTitleBar
 - Idea: Wrap the pages in `YaruDetailPage` and let them have their own `YaruWindowTitleBar()`
@@ -1130,7 +1115,7 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
     ```
 - Resulting UI (However those are just ideas which should not limit your ideas in any way!)
 
-  ![](better.png)  
+  ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/better.png)  
 
 ### Organize your code!
 
@@ -1144,7 +1129,7 @@ Check them out by either browsing https://ubuntu.github.io/yaru_widgets.dart/#/ 
 
 ||
 |-|
-|![](example.png)|
+|![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/example.png)|
 |*All widgets have a short example page with the source code how to use them.*|
 
 ## Thanks for reading
