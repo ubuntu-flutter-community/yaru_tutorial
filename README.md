@@ -95,9 +95,12 @@ index 373df32..bda5d8d 100644
       Widget build(BuildContext context) {
         return YaruTheme(builder: (context, yaru, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false, // <-------------
             theme: yaru.theme, // <-----------
             darkTheme: yaru.darkTheme, // <-------------
-            home: Scaffold(),
+            home: Scaffold(
+              appBar: const YaruWindowTitleBar(), // <-------------
+            ),
           );
         });
       }
