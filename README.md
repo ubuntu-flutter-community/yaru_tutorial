@@ -18,27 +18,57 @@
 1. `flutter pub add yaru.dart`
 2. `flutter pub add handy_window.dart`
 3. add `set(USE_LIBHANDY ON)` into `linux/CMakeLists.txt` under `set(CMAK#E_INSTALL_RPATH "$ORIGIN/lib")`
-4. change `my_application.cc` to
+4. change `my_application.cc` to (remove red lines, add green lines)
 
 ```diff
 diff --git a/linux/my_application.cc b/linux/my_application.cc
-index 373df32..6821223 100644
+index 373df32..bda5d8d 100644
 --- a/linux/my_application.cc
 +++ b/linux/my_application.cc
-@@ -4,6 +4,7 @@
- #ifdef GDK_WINDOWING_X11
- #include <gdk/gdkx.h>
- #endif
+@@ -1,9 +1,6 @@
+ #include "my_application.h"
+ 
+-#include <flutter_linux/flutter_linux.h>
+-#ifdef GDK_WINDOWING_X11
+-#include <gdk/gdkx.h>
+-#endif
 +#include <handy.h>
  
  #include "flutter/generated_plugin_registrant.h"
  
-@@ -17,8 +18,8 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+@@ -17,35 +14,8 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
  // Implements GApplication::activate.
  static void my_application_activate(GApplication* application) {
    MyApplication* self = MY_APPLICATION(application);
 -  GtkWindow* window =
 -      GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
+-
+-  // Use a header bar when running in GNOME as this is the common style used
+-  // by applications and is the setup most users will be using (e.g. Ubuntu
+-  // desktop).
+-  // If running on X and not using GNOME then just use a traditional title bar
+-  // in case the window manager does more exotic layout, e.g. tiling.
+-  // If running on Wayland assume the header bar will work (may need changing
+-  // if future cases occur).
+-  gboolean use_header_bar = TRUE;
+-#ifdef GDK_WINDOWING_X11
+-  GdkScreen* screen = gtk_window_get_screen(window);
+-  if (GDK_IS_X11_SCREEN(screen)) {
+-    const gchar* wm_name = gdk_x11_screen_get_window_manager_name(screen);
+-    if (g_strcmp0(wm_name, "GNOME Shell") != 0) {
+-      use_header_bar = FALSE;
+-    }
+-  }
+-#endif
+-  if (use_header_bar) {
+-    GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
+-    gtk_widget_show(GTK_WIDGET(header_bar));
+-    gtk_header_bar_set_title(header_bar, "teststst");
+-    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+-    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+-  } else {
+-    gtk_window_set_title(window, "teststst");
+-  }
 +  GtkWindow* window = GTK_WINDOW(hdy_application_window_new());
 +  gtk_window_set_application(window, GTK_APPLICATION(application));
 ```
