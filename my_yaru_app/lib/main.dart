@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yaru/yaru.dart';
-import 'package:yaru_icons/yaru_icons.dart';
-import 'package:yaru_widgets/yaru_widgets.dart';
 
 Future<void> main() async {
   await YaruWindowTitleBar.ensureInitialized();
@@ -33,7 +31,7 @@ class _Home extends StatelessWidget {
       body: YaruMasterDetailPage(
         length: 2,
         appBar: const YaruWindowTitleBar(),
-        tileBuilder: (context, index, selected) {
+        tileBuilder: (context, index, selected, availableWidth) {
           if (index == 0) {
             return const YaruMasterTile(
               leading: Icon(YaruIcons.ubuntu_logo),

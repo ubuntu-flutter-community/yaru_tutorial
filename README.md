@@ -1,14 +1,85 @@
-# How to create an Ubuntu Desktop Yaru application with Flutter
 
-This is a **beginner** tutorial for those new to the Dart programming language, new to programming languages in general and new to the Yaru design.
+# Template Projects
 
-### Wait: Already an experienced programmer but new to ubuntu yaru flutter apps?
+> [!TIP]
+> Already an experienced programmer but new to ubuntu yaru flutter apps?
+> Skip the tutorials and clone one of our template repositories, created with best practices, client side decorations, rounded bottom corners and CI in place, and take them as a starting point:
 
-Skip this tutorial and clone one of our template repositories, created with best practices, client side decorations, rounded bottom corners and CI in place, and take them as a starting point:
 
 | Calculator | Licenses | Numbers |
 | - | - | - |
 |![](https://raw.githubusercontent.com/ubuntu-flutter-community/calculator/main/screenshot.png)|![](https://raw.githubusercontent.com/ubuntu-flutter-community/licenses/main/screenshots/linux.png) |![](https://raw.githubusercontent.com/ubuntu-flutter-community/numbers/main/screenshots/linux.png) |
+
+# TL;DR Yaru.dart crash course
+
+> [!TIP]
+> TL;DR. Version without Explanation
+
+1. `flutter pub add yaru.dart`
+2. `flutter pub add handy_window.dart`
+3. add `set(USE_LIBHANDY ON)` into `linux/CMakeLists.txt` under `set(CMAK#E_INSTALL_RPATH "$ORIGIN/lib")`
+4. change `my_application.cc` to
+
+```diff
+diff --git a/linux/my_application.cc b/linux/my_application.cc
+index 373df32..6821223 100644
+--- a/linux/my_application.cc
++++ b/linux/my_application.cc
+@@ -4,6 +4,7 @@
+ #ifdef GDK_WINDOWING_X11
+ #include <gdk/gdkx.h>
+ #endif
++#include <handy.h>
+ 
+ #include "flutter/generated_plugin_registrant.h"
+ 
+@@ -17,8 +18,8 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+ // Implements GApplication::activate.
+ static void my_application_activate(GApplication* application) {
+   MyApplication* self = MY_APPLICATION(application);
+-  GtkWindow* window =
+-      GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
++  GtkWindow* window = GTK_WINDOW(hdy_application_window_new());
++  gtk_window_set_application(window, GTK_APPLICATION(application));
+```
+
+5. add
+    ```dart
+      await YaruWindowTitleBar.ensureInitialized();
+    ```
+    before `runApp`
+6. Wrap your MaterialApp with YaruTheme and use the `yaru.theme` and `yaru.darkTheme` like so:
+    ```dart
+    import 'package:flutter/material.dart';
+    import 'package:yaru/yaru.dart';
+
+    Future<void> main() async {
+      await YaruWindowTitleBar.ensureInitialized();
+      runApp(const MyApp());
+    }
+
+    class MyApp extends StatelessWidget {
+      const MyApp({super.key});
+
+      @override
+      Widget build(BuildContext context) {
+        return YaruTheme(builder: (context, yaru, child) {
+          return MaterialApp(
+            theme: yaru.theme, // <-----------
+            darkTheme: yaru.darkTheme, // <-------------
+            home: Scaffold(),
+          );
+        });
+      }
+    }
+    ```
+7. Check out our Widgets in our [Web-App](https://ubuntu.github.io/yaru.dart/)
+
+
+
+# How to create an Ubuntu Desktop Yaru application with Flutter
+
+This is a **beginner** tutorial for those new to the Dart programming language, new to programming languages in general and new to the Yaru design.
 
 ## Intro
 
@@ -538,17 +609,14 @@ The basic yaru theme and colors are in but we got more things to do:
 3) Create a master detail app
 4) use yaru_icons
 
-### yaru_widgets.dart
+### Client side decorations with yaru.dart
 
 As you may have observed the app is living inside a GTK window.
 
 ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/gtkwindow.png)
 
-This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another yaru library: [`yaru_widgets.dart`](https://github.com/ubuntu/yaru_widgets.dart)
+This is totally fine as it is because it works. However we aim to have the best look as possible, so we will need to use another YaruWindowTitleBar.
 
-- Fire up the VsCode command palette again with CTRL+SHIFT+P
-- and type `Dart: Add Dependency` as before.
-- Now search for `yaru_widgets` and hit enter when selected.
 
 - In your main.dart file write `YaruWindowTitleBar` before you call `runApp`.
   - (1) write `YaruWindowTitleBar`
@@ -558,10 +626,6 @@ This is totally fine as it is because it works. However we aim to have the best 
     ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/yaruwindowtitlebar.png)
   - and press enter
 
-- In line 3 you should now have this import
-  ```dart
-  import 'package:yaru_widgets/yaru_widgets.dart';
-  ```
 
 - Complete the line by using the `await` keyword, and calling `YaruWindowTitleBar.ensureInitialized()`
 
@@ -590,7 +654,6 @@ This is totally fine as it is because it works. However we aim to have the best 
   ```dart
   import 'package:flutter/material.dart';
   import 'package:yaru/yaru.dart';
-  import 'package:yaru_widgets/yaru_widgets.dart';
 
   Future<void> main() async {
     await YaruWindowTitleBar.ensureInitialized();
@@ -635,7 +698,7 @@ This is totally fine as it is because it works. However we aim to have the best 
   }
   ```
 
-Since yaru_widgets also modified the Linux specific files we did not look into (yet) you need to restart the app this time completely.
+Since yaru also modified the Linux specific files we did not look into (yet) you need to restart the app this time completely.
 
 - Stop it, and start it again.
 
@@ -974,12 +1037,11 @@ In this tutorial we create a master/details-app, because this type of app is pre
 
   ![](https://raw.githubusercontent.com/ubuntu-flutter-community/yaru_tutorial/master/donenoicons.png)
 
-### yaru_icons.dart
+### Yaru Icons
 
-The thin stroked, sleek [yaru_icons](https://github.com/ubuntu/yaru_icons.dart) are elemental for the full Yaru look and fit perfectly to the [Ubuntu font](https://design.ubuntu.com/font).
+The thin stroked, sleek [Yaru Icons](https://github.com/ubuntu/yaru.dart) are elemental for the full Yaru look and fit perfectly to the [Ubuntu font](https://design.ubuntu.com/font).
 Icons can be used anywhere in a Flutter app, since they are Widgets. In our example we chose them to use as a leading widget in your master view.
 
-- add `yaru_icons` as a dependency like you added the previous dependencies
 - change the `leading` property of your `YaruMasterTile`s to have the value `Icon(YaruIcons.XXXX)` where `XXXX` is any icon you want to have
 - There is a nice overview of currently available icons on this website (also made with flutter): https://ubuntu.github.io/yaru_icons.dart/
 - to finally get rid of all blue underlines (warnings) run the command `dart fix --apply`
@@ -989,8 +1051,6 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
   ```dart
   import 'package:flutter/material.dart';
   import 'package:yaru/yaru.dart';
-  import 'package:yaru_icons/yaru_icons.dart';
-  import 'package:yaru_widgets/yaru_widgets.dart';
 
   Future<void> main() async {
     await YaruWindowTitleBar.ensureInitialized();
@@ -1121,11 +1181,11 @@ Icons can be used anywhere in a Flutter app, since they are Widgets. In our exam
 
 VsCode quick commands make it really easy to wrap, extract and move Widgets, wrap parts inside control blocks or quick fix. Use this power to extract and split your code into multiple files and Widgets.
 
-### Explore yaru_widgets
+### Explore yaru.dart
 
-In addition to `material.dart`, `yaru_widgets.dart` offers a ton of good looking widgets to chose from, which fit perfectly into the Ubuntu desktop.
+In addition to `material.dart`, `yaru.dart` offers a ton of good looking widgets to chose from, which fit perfectly into the Ubuntu desktop.
 
-Check them out by either browsing https://ubuntu.github.io/yaru_widgets.dart/#/ or by installing `sudo snap install yaru-widgets-example`
+Check them out by either browsing https://ubuntu.github.io/yaru.dart/#/ or by installing `sudo snap install yaru-widgets-example`
 
 ||
 |-|
