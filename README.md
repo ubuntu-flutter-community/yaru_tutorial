@@ -17,7 +17,7 @@
 
 1. `flutter pub add yaru`
 2. `flutter pub add handy_window`
-3. add `set(USE_LIBHANDY ON)` into `linux/CMakeLists.txt` under `set(CMAK#E_INSTALL_RPATH "$ORIGIN/lib")`
+3. add `set(USE_LIBHANDY ON)` into `linux/CMakeLists.txt` under `set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")`
 4. change `my_application.cc` to (remove red lines, add green lines)
 
 ```diff
