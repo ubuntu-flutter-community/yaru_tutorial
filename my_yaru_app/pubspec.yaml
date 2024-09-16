@@ -6,14 +6,18 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.24.3"
 
 dependencies:
   flutter:
     sdk: flutter
+  handy_window: ^0.4.0
+  yaru:
+    git:
+      url: https://github.com/ubuntu/yaru.dart
+      ref: 48d0c6790da12a53c3f151936fe5e1573f7ea389
 
-  yaru: ^4.0.0
-  handy_window: ^0.3.1
 
 dev_dependencies:
   flutter_test:
