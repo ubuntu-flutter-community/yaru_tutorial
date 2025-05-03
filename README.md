@@ -1018,6 +1018,22 @@ Hopefully this tutorial was helpful, thanks for reading!
 
 -----------------
 ## Knowledge links and recommended dart libraries
+
+### Essential Flutter knowledge
+
+- [The Official Flutter Website Tutorials](https://docs.flutter.dev/get-started/learn-flutter)
+- [The State class](https://www.youtube.com/watch?v=FP737UMx7ss)
+- [BuildContext](https://www.youtube.com/watch?v=rIaaH87z1-g)
+- [Isolates/Event loops](https://www.youtube.com/watch?v=vl_AaCgudcY)
+- [Future](https://www.youtube.com/watch?v=OTS-ap9_aXc)
+- [Streams](https://www.youtube.com/watch?v=nQBpOIHE4eE)
+- [Async/Await](https://www.youtube.com/watch?v=SmTCmDMi4BY)
+
+### State managment and app architecture
+
+- [State Management](https://docs.flutter.dev/data-and-backend/state-mgmt/intro)
+- [MVVM](https://docs.flutter.dev/app-architecture/guide)
+
 ### Freedesktop and other Linux specific API implementations in dart
 
 - [dbus.dart](https://pub.dev/packages/dbus)
@@ -1027,24 +1043,36 @@ Hopefully this tutorial was helpful, thanks for reading!
 - [xdg_desktop_portal](https://pub.dev/packages/xdg_desktop_portal)
 - [desktop_notifications](https://pub.dev/packages/desktop_notifications)
 
-### Essential Flutter knowledge
+### Advanced Flutter knowledge
 
-- [What is State?](https://www.youtube.com/watch?v=QlwiL_yLh6E)
-- [BuildContext](https://www.youtube.com/watch?v=rIaaH87z1-g)
-### State management
+- [Lifecycle of a widget](https://www.youtube.com/watch?v=_gIbneld-bw)
 
+### Service Locator / Dependency Injection
+
+- [get_it (service/reference locator)](https://pub.dev/packages/get_it)
+- [injectable (dependency injection, includes and is based on get_it)](https://pub.dev/packages/injectable)
+
+### State management packages
+
+- [watch_it (includes get_it)](https://pub.dev/packages/watch_it)
 - [provider](https://pub.dev/packages/provider)
-- [riverpod](https://pub.dev/packages/riverpod)
+- [riverpod (includes depedency injection)](https://pub.dev/packages/riverpod)
 
-### Database access and REST services
+### Database access and REST services packages
 
-- [isar](https://pub.dev/packages/isar)
+- [postgrest](https://pub.dev/packages/postgrest)
 - [mysql client](https://pub.dev/packages/mysql_client)
+- [isar](https://pub.dev/packages/isar)
 - [conduit](https://pub.dev/packages/conduit)
 
-### Cloud API access
+### Creating server applications with Dart packages
+
+- [serverpod](https://pub.dev/packages/serverpod)
+- [dart frog](https://pub.dev/packages/dart_frog)
+
+### Cloud API access and BaaS clients packages
 
 - [supabase (open source firebase alternative)](https://pub.dev/packages/supabase)
-- [appwrite (oppen source firebase alternative)](https://pub.dev/packages/appwrite)
+- [appwrite (open source firebase alternative)](https://pub.dev/packages/appwrite)
 - [amazon amplify](https://pub.dev/packages/amplify_flutter) (<--- Linux support in dev branch)
 - [firebase](https://github.com/invertase/flutterfire_desktop)
